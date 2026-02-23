@@ -422,99 +422,6 @@ footer{background:var(--surface);border-top:1px solid var(--border);display:flex
 
 /* Active language selector highlight */
 .lang-btn.active .lang-status{background:rgba(0,230,118,.15);color:var(--green);border-color:rgba(0,230,118,.3);}
-
-/* ══════════════════════════════════════
-   S9: KOREAN LANGUAGE EDUCATION
-══════════════════════════════════════ */
-#s9{flex-direction:row;}
-
-/* LEFT: Module selector */
-.ko-ctrl{width:230px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:16px;gap:10px;overflow-y:auto;}
-.module-list{display:flex;flex-direction:column;gap:5px;}
-.module-btn{padding:10px 12px;border-radius:5px;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:all .2s;text-align:left;}
-.module-btn:hover{border-color:#22c55e;background:rgba(34,197,94,.06);}
-.module-btn.active{border-color:#22c55e;background:rgba(34,197,94,.1);box-shadow:0 0 0 1px rgba(34,197,94,.25);}
-.module-btn .m-num{font-family:var(--mono);font-size:8px;color:var(--dim);display:block;margin-bottom:2px;}
-.module-btn .m-title{font-family:var(--head);font-size:13px;font-weight:700;color:#fff;}
-.module-btn.active .m-title{color:#22c55e;}
-.module-btn .m-sub{font-family:var(--mono);font-size:9px;color:var(--dim);margin-top:2px;display:block;}
-.module-btn .m-prog{margin-top:6px;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
-.module-btn .m-prog-fill{height:100%;background:#22c55e;border-radius:2px;transition:width .4s;}
-
-.ko-worker-info{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:10px;}
-.ko-worker-flag{font-size:24px;text-align:center;line-height:1;margin-bottom:4px;}
-.ko-worker-name{font-family:var(--head);font-size:15px;font-weight:700;text-align:center;color:#fff;}
-.ko-worker-level{font-family:var(--mono);font-size:8px;color:var(--dim);text-align:center;margin-top:2px;}
-
-.ko-stat-box{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:10px;display:flex;flex-direction:column;gap:6px;}
-.ko-stat-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;}
-.ko-stat-row .k{color:var(--dim);}
-.ko-stat-row .v{color:#22c55e;font-weight:bold;}
-
-/* CENTER: Main learning area */
-.ko-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
-.ko-module-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.ko-module-title{font-family:var(--head);font-size:20px;font-weight:900;color:#22c55e;}
-.ko-module-desc{font-family:var(--mono);font-size:9px;color:var(--dim);margin-top:3px;}
-.ko-mode-tags{display:flex;gap:6px;}
-.ko-tag{font-family:var(--mono);font-size:8px;padding:2px 8px;border-radius:2px;border:1px solid;}
-.ko-tag.green{color:#22c55e;border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.08);}
-.ko-tag.cyan{color:#00e5ff;border-color:rgba(0,229,255,.3);background:rgba(0,229,255,.05);}
-.ko-tag.orange{color:var(--accent);border-color:rgba(245,166,35,.35);background:rgba(245,166,35,.08);}
-
-/* Word cards */
-.ko-cards-area{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;}
-.ko-scene-strip{background:var(--panel);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
-.ko-scene-label{background:rgba(34,197,94,.08);border-bottom:1px solid var(--border);padding:8px 14px;font-family:var(--head);font-size:11px;font-weight:700;color:#22c55e;letter-spacing:1.5px;}
-.ko-words-row{display:flex;gap:8px;padding:10px 14px;flex-wrap:wrap;}
-.ko-word-card{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:10px 12px;cursor:pointer;transition:all .2s;min-width:120px;flex:1;}
-.ko-word-card:hover{border-color:#22c55e;transform:translateY(-2px);box-shadow:0 6px 18px rgba(34,197,94,.12);}
-.ko-word-card.playing{border-color:#22c55e;background:rgba(34,197,94,.08);box-shadow:0 0 0 2px rgba(34,197,94,.25);}
-.ko-word-card.learned{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.04);}
-.ko-word-card .wc-ko{font-family:var(--head);font-size:18px;font-weight:900;color:#fff;letter-spacing:.5px;}
-.ko-word-card .wc-rom{font-family:var(--mono);font-size:9px;color:#00e5ff;margin-top:2px;}
-.ko-word-card .wc-trans{font-family:var(--body);font-size:10px;color:var(--text);margin-top:3px;line-height:1.4;}
-.ko-word-card .wc-native{font-family:var(--body);font-size:11px;color:var(--accent);margin-top:3px;}
-.ko-word-card .wc-badge{font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:4px;}
-.ko-word-card .wc-play{font-size:14px;float:right;margin-top:-2px;}
-
-/* AI Coaching integration strip */
-.ko-coach-strip{background:var(--panel);border-top:2px solid #22c55e;padding:14px 20px;flex-shrink:0;}
-.coach-strip-title{font-family:var(--head);font-size:10px;font-weight:700;letter-spacing:2px;color:#22c55e;margin-bottom:8px;}
-.coach-demo-area{display:flex;gap:12px;align-items:flex-start;}
-.coach-bubble{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 14px;flex:1;}
-.coach-bubble .cb-label{font-family:var(--mono);font-size:8px;color:var(--dim);margin-bottom:5px;display:flex;align-items:center;gap:6px;}
-.coach-bubble .cb-label span{font-family:var(--head);font-size:11px;font-weight:700;color:#22c55e;}
-.coach-bubble .cb-ko{font-family:var(--head);font-size:15px;font-weight:700;color:#fff;line-height:1.4;}
-.coach-bubble .cb-highlight{color:#22c55e;background:rgba(34,197,94,.15);padding:0 3px;border-radius:2px;}
-.coach-bubble .cb-native{font-family:var(--body);font-size:12px;color:var(--text);margin-top:4px;}
-.coach-bubble .cb-phonetic{font-family:var(--mono);font-size:9px;color:#00e5ff;margin-top:3px;}
-
-.ko-practice-btn{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.4);border-radius:5px;padding:8px 14px;font-family:var(--head);font-size:12px;font-weight:700;color:#22c55e;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:90px;}
-.ko-practice-btn:hover{background:rgba(34,197,94,.22);border-color:#22c55e;}
-.ko-practice-btn.active{background:rgba(34,197,94,.25);box-shadow:0 0 12px rgba(34,197,94,.3);}
-.ko-practice-btn .kpb-icon{font-size:18px;}
-.ko-practice-btn .kpb-label{font-family:var(--mono);font-size:8px;color:var(--dim);}
-
-/* RIGHT: Dual device */
-.ko-device-panel{width:240px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;padding:14px;gap:10px;}
-.ko-bilingual-frame{background:#000;border:3px solid #2a3a4a;border-radius:16px;padding:14px;flex:1;display:flex;flex-direction:column;gap:8px;position:relative;}
-.ko-bilingual-frame .device-notch{width:50px;height:7px;background:#1a2a3a;border-radius:4px;margin:0 auto;}
-.ko-title-bar{font-family:var(--mono);font-size:8px;color:#22c55e;text-align:center;letter-spacing:1.5px;}
-.ko-coach-msg{background:#0a1a0d;border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:5px;}
-.ko-coach-msg .kcm-badge{font-family:var(--mono);font-size:7px;color:#22c55e;letter-spacing:1px;}
-.ko-coach-msg .kcm-ko{font-family:var(--head);font-size:13px;font-weight:700;color:#fff;line-height:1.4;}
-.ko-coach-msg .kcm-ko em{color:#22c55e;font-style:normal;}
-.ko-coach-msg .kcm-native{font-family:var(--body);font-size:11px;color:#cde;line-height:1.5;margin-top:2px;}
-.ko-coach-msg .kcm-rom{font-family:var(--mono);font-size:8px;color:#00e5ff;margin-top:2px;}
-.ko-word-learned{background:#0a0d0a;border-radius:4px;padding:6px 10px;}
-.ko-word-learned .kwl-label{font-family:var(--mono);font-size:7px;color:var(--dim);margin-bottom:4px;}
-.ko-word-chips{display:flex;flex-wrap:wrap;gap:3px;}
-.ko-chip{font-family:var(--mono);font-size:8px;padding:2px 6px;background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.3);border-radius:2px;}
-.ko-progress-ring{display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 0;}
-.ko-ring-num{font-family:var(--head);font-size:28px;font-weight:900;color:#22c55e;line-height:1;}
-.ko-ring-label{font-family:var(--mono);font-size:8px;color:var(--dim);line-height:1.5;}
-
 </style>
 </head>
 <body>
@@ -618,28 +525,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);display:flex
         <span class="tbadge g">Controlled Arc</span>
       </div>
     </div>
-    <div class="panel-m" style="flex-direction:column;gap:0;background:#000;overflow:hidden;">
-      <!-- 영상 + 스켈레톤 오버레이 컨테이너 -->
-      <div id="video-wrap" style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#000;">
-        <video id="analysis-video" style="max-width:100%;max-height:100%;display:block;" muted playsinline></video>
-        <canvas id="skeleton-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
-        <!-- 스캔 라인 효과 -->
-        <div id="scan-line" style="position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.8),transparent);pointer-events:none;display:none;"></div>
-        <!-- 분석 중 HUD -->
-        <div id="analysis-hud" style="position:absolute;top:10px;left:10px;font-family:'Share Tech Mono',monospace;font-size:10px;color:#00e5ff;background:rgba(0,0,0,.6);padding:6px 10px;border-radius:3px;border:1px solid rgba(0,229,255,.3);display:none;">
-          <span id="hud-frame">FRAME 0000</span>&nbsp;&nbsp;<span id="hud-fps">60 FPS</span>
-        </div>
-        <div id="analysis-hud2" style="position:absolute;bottom:10px;right:10px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--green);background:rgba(0,0,0,.6);padding:6px 10px;border-radius:3px;border:1px solid rgba(0,230,118,.3);display:none;">
-          <span id="hud-conf">CONF: 0%</span>&nbsp;&nbsp;<span id="hud-pts">KEYPOINTS: 0/4</span>
-        </div>
-        <!-- 분석 전 안내 -->
-        <div id="no-video-msg" style="text-align:center;color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:12px;line-height:2;">
-          <div style="font-size:36px;margin-bottom:8px;">📹</div>
-          <div>영상을 업로드하면</div>
-          <div>이 화면에서 실시간 분석됩니다</div>
-        </div>
-      </div>
-    </div>
+    <div class="panel-m"><canvas id="motion-canvas" width="520" height="400" style="border:1px solid var(--border);border-radius:6px;background:#060c16;"></canvas></div>
     <div class="panel-r">
       <div class="slabel">Joint Data</div>
       <div class="drow"><span class="k">J1</span><span class="v" id="j1">+23.4°</span></div>
@@ -1055,160 +941,6 @@ footer{background:var(--surface);border-top:1px solid var(--border);display:flex
 
   </div>
 
-
-  <!-- ═══════════════════════════════════════
-       S9: 현장 한국어 교육 (TRAIN MODE)
-  ═══════════════════════════════════════ -->
-  <div id="s9" class="screen">
-
-    <!-- LEFT: Module selector -->
-    <div class="ko-ctrl">
-      <div class="slabel" style="color:#22c55e">한국어 교육 모듈</div>
-
-      <div class="ko-worker-info">
-        <div class="ko-worker-flag" id="ko-flag">🇻🇳</div>
-        <div class="ko-worker-name" id="ko-name">Nguyen Van A</div>
-        <div class="ko-worker-level" id="ko-level">학습 중 · LEVEL 2</div>
-      </div>
-
-      <div class="module-list" id="module-list">
-        <div class="module-btn active" data-mod="0" onclick="selectModule(0)">
-          <span class="m-num">MODULE 01</span>
-          <div class="m-title">🚨 안전 언어</div>
-          <span class="m-sub">Safety Language — 최우선</span>
-          <div class="m-prog"><div class="m-prog-fill" style="width:85%"></div></div>
-        </div>
-        <div class="module-btn" data-mod="1" onclick="selectModule(1)">
-          <span class="m-num">MODULE 02</span>
-          <div class="m-title">🔧 작업 지시어</div>
-          <span class="m-sub">Work Commands — 핵심</span>
-          <div class="m-prog"><div class="m-prog-fill" style="width:62%"></div></div>
-        </div>
-        <div class="module-btn" data-mod="2" onclick="selectModule(2)">
-          <span class="m-num">MODULE 03</span>
-          <div class="m-title">🛠 공구·장비 이름</div>
-          <span class="m-sub">Tools & Equipment — 기초</span>
-          <div class="m-prog"><div class="m-prog-fill" style="width:44%"></div></div>
-        </div>
-        <div class="module-btn" data-mod="3" onclick="selectModule(3)">
-          <span class="m-num">MODULE 04</span>
-          <div class="m-title">🏭 직장 생활</div>
-          <span class="m-sub">Workplace Life — 생활</span>
-          <div class="m-prog"><div class="m-prog-fill" style="width:28%"></div></div>
-        </div>
-        <div class="module-btn" data-mod="4" onclick="selectModule(4)">
-          <span class="m-num">MODULE 05</span>
-          <div class="m-title">⚡ 기술 심화</div>
-          <span class="m-sub">Technical Terms — 고급</span>
-          <div class="m-prog"><div class="m-prog-fill" style="width:10%"></div></div>
-        </div>
-      </div>
-
-      <div class="ko-stat-box">
-        <div style="font-family:var(--mono);font-size:8px;color:var(--dim);margin-bottom:2px;">학습 통계</div>
-        <div class="ko-stat-row"><span class="k">오늘 학습 단어</span><span class="v" id="ko-today">0</span></div>
-        <div class="ko-stat-row"><span class="k">총 학습 단어</span><span class="v" id="ko-total">0</span></div>
-        <div class="ko-stat-row"><span class="k">학습 모드</span><span class="v" style="color:#00e5ff">AI 통합</span></div>
-        <div class="ko-stat-row"><span class="k">발음 정확도</span><span class="v" id="ko-acc">—</span></div>
-      </div>
-    </div>
-
-    <!-- CENTER: Main learning area -->
-    <div class="ko-main">
-      <div class="ko-module-header">
-        <div>
-          <div class="ko-module-title" id="ko-mod-title">🚨 안전 언어 (Safety Language)</div>
-          <div class="ko-module-desc" id="ko-mod-desc">용접 현장의 즉각적인 위험 대응 언어 — 입국 전 필수 이수</div>
-        </div>
-        <div class="ko-mode-tags">
-          <div class="ko-tag green">WeldAI 통합</div>
-          <div class="ko-tag cyan">자동 노출</div>
-          <div class="ko-tag orange">음성 반복</div>
-        </div>
-      </div>
-
-      <div class="ko-cards-area" id="ko-cards-area">
-        <!-- injected by JS -->
-      </div>
-
-      <!-- AI Coaching Integration Strip -->
-      <div class="ko-coach-strip">
-        <div class="coach-strip-title">▶ AI 코치 통합 — 용접 지시 중 한국어 자동 노출</div>
-        <div class="coach-demo-area">
-          <div class="coach-bubble" id="ko-coach-bubble">
-            <div class="cb-label"><span>WeldAI COACH</span> · 실시간 코칭 중</div>
-            <div class="cb-ko" id="ko-cb-ko">모듈을 선택하면 통합 코칭 예시가 표시됩니다</div>
-            <div class="cb-native" id="ko-cb-native"></div>
-            <div class="cb-phonetic" id="ko-cb-phonetic"></div>
-          </div>
-          <button class="ko-practice-btn" id="ko-play-btn" onclick="playCoachDemo()">
-            <span class="kpb-icon">🔊</span>
-            재생
-            <span class="kpb-label">PLAY DEMO</span>
-          </button>
-          <button class="ko-practice-btn" onclick="nextCoachDemo()" style="border-color:rgba(0,229,255,.4);color:#00e5ff;background:rgba(0,229,255,.06);">
-            <span class="kpb-icon">⏭</span>
-            다음
-            <span class="kpb-label">NEXT PHRASE</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- RIGHT: Worker bilingual device -->
-    <div class="ko-device-panel">
-      <div class="slabel" style="color:#22c55e">WORKER DEVICE</div>
-
-      <div class="ko-bilingual-frame">
-        <div class="device-notch"></div>
-        <div class="ko-title-bar">WeldAI · 한국어 코치</div>
-        <div class="ko-coach-msg">
-          <div class="kcm-badge">🎙 AI COACH 현재 말하는 중</div>
-          <div class="kcm-ko" id="kcm-ko">토치를 <em>낮추세요</em></div>
-          <div class="kcm-native" id="kcm-native">Hạ đuốc xuống / Lower the torch</div>
-          <div class="kcm-rom" id="kcm-rom">to-chi-reul na-chu-se-yo</div>
-        </div>
-        <div class="ko-word-learned">
-          <div class="kwl-label">✓ 오늘 익힌 단어</div>
-          <div class="ko-word-chips" id="ko-chips">
-            <div class="ko-chip">낮추세요</div>
-            <div class="ko-chip">위험</div>
-            <div class="ko-chip">멈춰요</div>
-          </div>
-        </div>
-        <div class="ko-progress-ring">
-          <div>
-            <div class="ko-ring-num" id="ko-ring-num">3</div>
-          </div>
-          <div class="ko-ring-label">오늘 학습<br>단어 수<br><span style="color:#22c55e;font-weight:bold" id="ko-ring-pct">+0</span> 이번 세션</div>
-        </div>
-        <div style="background:#0a0d0a;border-radius:4px;padding:8px;flex-shrink:0;">
-          <div style="font-family:var(--mono);font-size:7px;color:var(--dim);margin-bottom:4px;">누적 학습 효과</div>
-          <div style="display:flex;gap:8px;align-items:flex-end;">
-            <div style="text-align:center;">
-              <div style="font-family:var(--head);font-size:18px;font-weight:900;color:#22c55e;" id="ko-total-disp">47</div>
-              <div style="font-family:var(--mono);font-size:7px;color:var(--dim);">총 단어</div>
-            </div>
-            <div style="flex:1;display:flex;align-items:flex-end;gap:2px;height:30px;" id="ko-bar-chart">
-              <!-- bars injected -->
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div style="background:var(--surface);border:1px solid rgba(34,197,94,.25);border-radius:4px;padding:10px;">
-        <div style="font-family:var(--mono);font-size:8px;color:#22c55e;margin-bottom:6px;">🧠 자동 노출 원리</div>
-        <div style="font-family:var(--mono);font-size:8px;color:var(--dim);line-height:1.7;">
-          용접 지시 → 자국어<br>
-          <span style="color:#22c55e">+ 한국어 병기</span><br>
-          → 반복 노출 학습<br>
-          → 별도 수업 불필요
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /s9 -->
-
 </div><!-- /screens -->
 
 <!-- FOOTER -->
@@ -1257,7 +989,6 @@ const trainSteps = [
   {id:6, label:'LIVE COACHING'},
   {id:7, label:'PROGRESS REPORT'},
   {id:8, label:'MULTILINGUAL AI'},
-  {id:9, label:'한국어 교육'},
 ];
 
 function getSteps(){ return mode==='capture' ? captureSteps : trainSteps; }
@@ -1339,17 +1070,11 @@ function initScreen(n) {
   if(n===6) initCoaching();
   if(n===7) initDashboard();
   if(n===8) initMultilingual();
-  if(n===9) initKoreanEdu();
 }
 
 // ═══════════════════════════════════════════════
 // S1 Upload
 // ═══════════════════════════════════════════════
-// 업로드된 영상의 ObjectURL 저장 (S2에서 재생용)
-let uploadedVideoURL = null;
-// 사람 궤적 저장 → S5 로봇이 사용
-let humanTrajPts = [];
-
 function selectSample(n) {
   selectedSample = n;
   document.getElementById('card1').classList.toggle('selected',n===1);
@@ -1357,19 +1082,14 @@ function selectSample(n) {
   document.getElementById('svi').classList.add('show');
   document.getElementById('svi-name').textContent = n===1?'Arc Welding — Steel Frame':'TIG Welding — Pipe Joint';
   document.getElementById('aBtn').classList.add('ready');
-  // 샘플 영상 URL 설정
-  uploadedVideoURL = n===1 ? 'videos/sample1.mp4' : 'videos/sample2.mp4';
 }
 function handleFile(inp) {
   if(!inp.files.length) return;
-  const file = inp.files[0];
   selectedSample = 0;
-  if(uploadedVideoURL && uploadedVideoURL.startsWith('blob:')) URL.revokeObjectURL(uploadedVideoURL);
-  uploadedVideoURL = URL.createObjectURL(file);
   document.getElementById('card1').classList.remove('selected');
   document.getElementById('card2').classList.remove('selected');
   document.getElementById('svi').classList.add('show');
-  document.getElementById('svi-name').textContent = file.name;
+  document.getElementById('svi-name').textContent = inp.files[0].name;
   document.getElementById('aBtn').classList.add('ready');
 }
 function startAnalysis() {
@@ -1398,188 +1118,57 @@ function startAnalysis() {
 }
 
 // ═══════════════════════════════════════════════
-// S2: 영상 재생 + 스켈레톤 오버레이
+// S2 Motion canvas
 // ═══════════════════════════════════════════════
 function initMotion(){
-  const video = document.getElementById('analysis-video');
-  const skelCanvas = document.getElementById('skeleton-canvas');
-  const ctx = skelCanvas.getContext('2d');
-  const wrap = document.getElementById('video-wrap');
-  const noMsg = document.getElementById('no-video-msg');
-  const hud1 = document.getElementById('analysis-hud');
-  const hud2 = document.getElementById('analysis-hud2');
-  const scanLine = document.getElementById('scan-line');
-
-  // 영상 설정
-  if(uploadedVideoURL) {
-    video.src = uploadedVideoURL;
-    video.style.display = 'block';
-    noMsg.style.display = 'none';
-    hud1.style.display = 'block';
-    hud2.style.display = 'block';
-    scanLine.style.display = 'block';
-    video.play().catch(()=>{});
-  } else {
-    video.style.display = 'none';
-    noMsg.style.display = 'block';
-  }
-
-  // Canvas 크기를 video에 맞춤
-  function resizeSkel(){
-    skelCanvas.width = video.offsetWidth || wrap.offsetWidth;
-    skelCanvas.height = video.offsetHeight || wrap.offsetHeight;
-  }
-  video.addEventListener('loadedmetadata', resizeSkel);
-  setTimeout(resizeSkel, 200);
-
-  let t = 0;
-  let frameCount = 0;
-  humanTrajPts = []; // 궤적 초기화
-
-  // ── 스켈레톤 관절 좌표 생성 (영상 크기 기준 비율) ──
-  // 사람이 용접할 때의 자연스러운 동작 시뮬레이션
-  function getJoints(t, W, H){
-    const phase = (t % 360) / 360;
-    // 어깨 (고정)
-    const shoulder = { x: W*0.38 + Math.sin(t*0.008)*W*0.01, y: H*0.25 + Math.cos(t*0.006)*H*0.008 };
-    // 팔꿈치 (중간 움직임)
-    const elbow = {
-      x: shoulder.x + W*0.14 + Math.sin(t*0.025 + 0.5)*W*0.04,
-      y: shoulder.y + H*0.18 + Math.cos(t*0.02)*H*0.03
-    };
-    // 손목 (더 많이 움직임)
-    const wrist = {
-      x: elbow.x + W*0.13 + Math.sin(t*0.04 + 1.2)*W*0.06,
-      y: elbow.y + H*0.16 + Math.cos(t*0.035 + 0.8)*H*0.05
-    };
-    // 토치 끝 (가장 많이 움직임 - 이게 용접선이 됨)
-    const torch = {
-      x: wrist.x + W*0.07 + Math.sin(t*0.055 + 2.0)*W*0.08,
-      y: wrist.y + H*0.10 + Math.cos(t*0.05 + 1.5)*H*0.06
-    };
-    return { shoulder, elbow, wrist, torch };
-  }
-
-  let scanY = 0;
-  let confValue = 0;
-  let kpCount = 0;
-
+  const canvas=document.getElementById('motion-canvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  const pts=[];
+  for(let i=0;i<=200;i++) pts.push({x:60+(i/200)*(W-120),y:H/2+Math.sin(i/200*Math.PI*3)*75+Math.sin(i/200*Math.PI*7)*18});
+  let drawn=0,t=0;
   function frame(){
-    const W = skelCanvas.width || 520;
-    const H = skelCanvas.height || 400;
-    ctx.clearRect(0, 0, W, H);
-
-    if(!uploadedVideoURL){ animH.m=requestAnimationFrame(frame); return; }
-
-    const joints = getJoints(t, W, H);
-
-    // ── 토치 궤적 기록 (나중에 S5 로봇이 사용) ──
-    if(t % 3 === 0) humanTrajPts.push({x: joints.torch.x/W, y: joints.torch.y/H});
-    if(humanTrajPts.length > 120) humanTrajPts.shift(); // 최근 120점만 유지
-
-    // ── 스캔 라인 ──
-    scanY = (scanY + 2) % H;
-    scanLine.style.top = scanY + 'px';
-
-    // ── 분석 영역 경계 박스 ──
-    ctx.strokeStyle = 'rgba(0,229,255,.25)';
-    ctx.lineWidth = 1;
-    ctx.setLineDash([6,4]);
-    ctx.strokeRect(W*0.22, H*0.12, W*0.56, H*0.75);
-    ctx.setLineDash([]);
-
-    // ── 관절 연결 스켈레톤 ──
-    const links = [
-      [joints.shoulder, joints.elbow],
-      [joints.elbow, joints.wrist],
-      [joints.wrist, joints.torch],
-    ];
-    links.forEach(([a,b]) => {
-      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-      ctx.strokeStyle = 'rgba(0,229,255,.75)';
-      ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.stroke();
-    });
-
-    // ── 관절 점 ──
-    const jColors = ['#00e5ff','#00e5ff','#f5a623','#ff4444'];
-    const jLabels = ['SHOULDER','ELBOW','WRIST','TORCH'];
-    const jArr = [joints.shoulder, joints.elbow, joints.wrist, joints.torch];
-    jArr.forEach((j, i) => {
-      // 글로우
-      const g = ctx.createRadialGradient(j.x, j.y, 2, j.x, j.y, 14);
-      g.addColorStop(0, jColors[i]+'88'); g.addColorStop(1, 'transparent');
-      ctx.beginPath(); ctx.arc(j.x, j.y, 14, 0, Math.PI*2);
-      ctx.fillStyle = g; ctx.fill();
-      // 원
-      ctx.beginPath(); ctx.arc(j.x, j.y, i===3?7:5, 0, Math.PI*2);
-      ctx.fillStyle = jColors[i]; ctx.fill();
-      ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
-      // 라벨
-      ctx.font = '9px Share Tech Mono';
-      ctx.fillStyle = jColors[i];
-      ctx.fillText(jLabels[i], j.x+10, j.y-6);
-    });
-
-    // ── 토치 궤적 잔상 ──
-    if(humanTrajPts.length > 2){
-      ctx.beginPath();
-      humanTrajPts.forEach((p,i) => {
-        const px = p.x*W, py = p.y*H;
-        i===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
-      });
-      ctx.strokeStyle = 'rgba(255,100,30,.7)';
-      ctx.lineWidth = 2; ctx.stroke();
-      // 최근 점 강조
-      const last = humanTrajPts[humanTrajPts.length-1];
-      ctx.beginPath(); ctx.arc(last.x*W, last.y*H, 4, 0, Math.PI*2);
-      ctx.fillStyle = '#ff6622'; ctx.fill();
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='rgba(26,42,64,.5)';ctx.lineWidth=1;
+    for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    if(drawn>1){
+      ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+      for(let i=1;i<drawn;i++)ctx.lineTo(pts[i].x,pts[i].y);
+      ctx.strokeStyle='rgba(30,144,255,.8)';ctx.lineWidth=2.5;ctx.stroke();
     }
-
-    // ── 토치 각도 표시 선 ──
-    const ang = (-45 + Math.sin(t*0.04)*15) * Math.PI/180;
-    ctx.beginPath();
-    ctx.moveTo(joints.torch.x, joints.torch.y);
-    ctx.lineTo(joints.torch.x + Math.cos(ang)*32, joints.torch.y + Math.sin(ang)*32);
-    ctx.strokeStyle = 'rgba(255,180,30,.9)'; ctx.lineWidth = 2; ctx.stroke();
-
-    // ── 용접 스파크 (토치 끝) ──
-    if(t % 4 < 2){
-      for(let i=0;i<3;i++){
-        ctx.beginPath();
-        const sx = joints.torch.x + Math.cos(ang)*32 + (Math.random()-.5)*8;
-        const sy = joints.torch.y + Math.sin(ang)*32 + (Math.random()-.5)*8;
-        ctx.arc(sx, sy, Math.random()*2.5, 0, Math.PI*2);
-        ctx.fillStyle = Math.random()>.5?'#ffcc00':'#ff6600';
-        ctx.globalAlpha = Math.random()*.9+.1; ctx.fill(); ctx.globalAlpha=1;
-      }
+    for(let i=5;i<drawn;i+=14){
+      const p=pts[i],pn=pts[Math.min(i+5,drawn-1)];
+      const dx=(pn.x-p.x)*3,dy=(pn.y-p.y)*3,ang=Math.atan2(dy,dx);
+      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x+dx,p.y+dy);
+      ctx.strokeStyle='rgba(245,166,35,.5)';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(p.x+dx,p.y+dy);
+      ctx.lineTo(p.x+dx-7*Math.cos(ang-.4),p.y+dy-7*Math.sin(ang-.4));
+      ctx.lineTo(p.x+dx-7*Math.cos(ang+.4),p.y+dy-7*Math.sin(ang+.4));
+      ctx.closePath();ctx.fillStyle='rgba(245,166,35,.5)';ctx.fill();
     }
-
-    // ── 각도 아크 표시 ──
-    ctx.beginPath();
-    ctx.arc(joints.wrist.x, joints.wrist.y, 22, 0, ang+Math.PI/2);
-    ctx.strokeStyle='rgba(245,166,35,.5)'; ctx.lineWidth=1.5; ctx.stroke();
-    ctx.font='9px Share Tech Mono'; ctx.fillStyle='#f5a623';
-    ctx.fillText(Math.abs(ang*180/Math.PI).toFixed(0)+'°', joints.wrist.x+26, joints.wrist.y-4);
-
-    // ── HUD 업데이트 ──
-    frameCount++;
-    confValue = Math.min(97.2, 60 + t*0.12 + Math.sin(t*0.1)*3);
-    kpCount = Math.min(4, 1 + Math.floor(t/15));
-    document.getElementById('hud-frame').textContent = 'FRAME ' + String(frameCount).padStart(4,'0');
-    document.getElementById('hud-conf').textContent = 'CONF: ' + confValue.toFixed(1)+'%';
-    document.getElementById('hud-pts').textContent = 'KEYPOINTS: '+kpCount+'/4';
-    document.getElementById('conf').textContent = confValue.toFixed(1)+'%';
-
-    // 사이드 패널 수치 업데이트
-    document.getElementById('ta').textContent = (42+Math.sin(t*.04)*12).toFixed(1)+'°';
-    document.getElementById('j1').textContent = '+'+(23+Math.sin(t*.1)*4).toFixed(1)+'°';
-    document.getElementById('j3').textContent = (67+Math.sin(t*.08)*6).toFixed(1)+'°';
-    document.getElementById('vx').textContent = (7.2+Math.sin(t*.12)*1.5).toFixed(1);
-    document.getElementById('vy').textContent = (9.1+Math.cos(t*.1)*1.2).toFixed(1);
-    document.getElementById('vm').textContent = (11.9+Math.sin(t*.09)*.8).toFixed(1);
-
+    if(drawn<pts.length){
+      const p=pts[drawn];
+      ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+      ctx.strokeStyle='var(--accent)';ctx.lineWidth=2;ctx.stroke();
+      const ang=(-45+Math.sin(drawn/30)*10)*Math.PI/180;
+      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x+Math.cos(ang)*28,p.y+Math.sin(ang)*28);
+      ctx.strokeStyle='rgba(255,107,53,.9)';ctx.lineWidth=2;ctx.stroke();
+    }
+    ctx.font='10px Share Tech Mono';
+    ctx.fillStyle='rgba(30,144,255,.8)';ctx.fillText('TRAJECTORY',18,18);
+    ctx.fillStyle='rgba(245,166,35,.8)';ctx.fillText('VELOCITY VEC',18,32);
+    if(drawn<pts.length)drawn+=3;
+    const p=drawn/pts.length;
+    document.getElementById('ta').textContent=(42+Math.sin(p*10)*8).toFixed(1)+'°';
+    document.getElementById('conf').textContent=(88+p*7).toFixed(1)+'%';
+    document.getElementById('j1').textContent='+'+(23+Math.sin(t*.1)*3).toFixed(1)+'°';
+    document.getElementById('j3').textContent=(67+Math.sin(t*.08)*5).toFixed(1)+'°';
+    document.getElementById('vx').textContent=(7.2+Math.sin(t*.12)*1.2).toFixed(1);
+    document.getElementById('vy').textContent=(9.1+Math.cos(t*.1)*.8).toFixed(1);
+    document.getElementById('vm').textContent=(11.9+Math.sin(t*.09)*.5).toFixed(1);
     t++;
-    animH.m = requestAnimationFrame(frame);
+    animH.m=requestAnimationFrame(frame);
   }
   frame();
 }
@@ -1653,162 +1242,33 @@ function initFail(){
 }
 
 // ═══════════════════════════════════════════════
-// S5 Success robot — 사람 궤적을 로봇이 재현
+// S5 Success robot
 // ═══════════════════════════════════════════════
 function initSuccess(){
   const canvas=document.getElementById('roc');const cont=canvas.parentElement;
   canvas.width=cont.offsetWidth;canvas.height=cont.offsetHeight;
   const ctx=canvas.getContext('2d');const W=canvas.width,H=canvas.height;
   let t=0,wp=0;const sparks=[];
-
-  // ── 궤적 결정: S2에서 기록된 사람 궤적 사용, 없으면 기본값 ──
-  let sp=[];
-  if(humanTrajPts.length > 5){
-    // 사람이 그린 실제 경로를 캔버스 크기에 맞게 스케일
-    // 화면 중앙 아래쪽에 자연스럽게 배치
-    const margin = {x: W*0.12, y: H*0.15, w: W*0.76, h: H*0.55};
-    sp = humanTrajPts.map(p=>({
-      x: margin.x + p.x * margin.w,
-      y: margin.y + p.y * margin.h
-    }));
-  } else {
-    // 기본 궤적 (영상 없을 때)
-    for(let i=0;i<=80;i++) sp.push({x:W*.18+(i/80)*(W*.64), y:H*.55+Math.sin(i*.18)*40+Math.sin(i*.35)*18});
-  }
-
-  // 사람 원본 궤적 (회색 점선 — "사람이 이렇게 했다")
-  const humanSp = [...sp];
-
-  const mets=[
-    {lbl:'Trajectory Error',b:85,a:4,bf:'18.3mm',af:'0.4mm'},
-    {lbl:'Constraint Violations',b:92,a:0,bf:'3 errors',af:'None ✓'},
-    {lbl:'Path Smoothness',b:28,a:96,bf:'34%',af:'96%',rev:true},
-    {lbl:'Similarity Score',b:20,a:97,bf:'—',af:'97.8%',rev:true}
-  ];
-  document.getElementById('cmp').innerHTML=mets.map(m=>`
-    <div class="cbar-row">
-      <div class="cbar-lbl">${m.lbl}</div>
-      <div class="cbar-bars">
-        <div class="cbar b4" style="width:${(m.rev?100-m.b:m.b)*1.3}px">${m.bf}</div>
-        <div class="cbar af" style="width:${(m.rev?m.a:100-m.a)*1.3}px">${m.af}</div>
-        <span class="cdiff">${m.rev?'↑':'↓'}</span>
-      </div>
-    </div>`).join('');
-
-  function addSpark(x,y){
-    for(let i=0;i<4;i++) sparks.push({
-      x,y,
-      vx:(Math.random()-.5)*6,vy:-Math.random()*7-2,
-      life:1,decay:.04+Math.random()*.04,
-      size:2+Math.random()*3,
-      color:Math.random()>.5?'#f5a623':'#ff6b35'
-    });
-  }
-
+  const sp=[];for(let i=0;i<=80;i++)sp.push({x:W*.18+(i/80)*(W*.64),y:H*.72+Math.sin(i*.18)*4});
+  const mets=[{lbl:'Trajectory Error',b:85,a:4,bf:'18.3mm',af:'0.4mm'},{lbl:'Constraint Violations',b:92,a:0,bf:'3 errors',af:'None ✓'},{lbl:'Path Smoothness',b:28,a:96,bf:'34%',af:'96%',rev:true},{lbl:'Similarity Score',b:20,a:97,bf:'—',af:'97.8%',rev:true}];
+  document.getElementById('cmp').innerHTML=mets.map(m=>`<div class="cbar-row"><div class="cbar-lbl">${m.lbl}</div><div class="cbar-bars"><div class="cbar b4" style="width:${(m.rev?100-m.b:m.b)*1.3}px">${m.bf}</div><div class="cbar af" style="width:${(m.rev?m.a:100-m.a)*1.3}px">${m.af}</div><span class="cdiff">${m.rev?'↑':'↓'}</span></div></div>`).join('');
+  function addSpark(x,y){for(let i=0;i<3;i++)sparks.push({x,y,vx:(Math.random()-.5)*5,vy:-Math.random()*6-2,life:1,decay:.04+Math.random()*.04,size:2+Math.random()*3,color:Math.random()>.5?'#f5a623':'#ff6b35'});}
   function frame(){
     ctx.clearRect(0,0,W,H);
-
-    // 배경 격자
-    ctx.strokeStyle='rgba(0,100,60,.12)';ctx.lineWidth=1;
+    ctx.strokeStyle='rgba(0,100,60,.15)';ctx.lineWidth=1;
     for(let x=0;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
     for(let y=0;y<H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-
-    // ── 사람 원본 궤적 (회색 점선) ──
-    if(humanSp.length>1){
-      ctx.beginPath();
-      humanSp.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
-      ctx.strokeStyle='rgba(100,130,160,.35)';ctx.lineWidth=2;
-      ctx.setLineDash([6,5]);ctx.stroke();ctx.setLineDash([]);
-      // 레이블
-      ctx.font='9px Share Tech Mono';ctx.fillStyle='rgba(100,130,160,.6)';
-      ctx.fillText('── HUMAN PATH',18,H-30);
-    }
-
-    // ── 로봇 완성 궤적 (초록 글로우선) ──
-    if(wp>1){
-      // 글로우 효과
-      ctx.beginPath();sp.slice(0,wp).forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
-      ctx.strokeStyle='rgba(0,230,118,.12)';ctx.lineWidth=16;ctx.stroke();
-      // 메인 선
-      ctx.beginPath();sp.slice(0,wp).forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
-      const g=ctx.createLinearGradient(sp[0].x,sp[0].y,sp[Math.min(wp-1,sp.length-1)].x,sp[Math.min(wp-1,sp.length-1)].y);
-      g.addColorStop(0,'rgba(0,230,118,.9)');g.addColorStop(1,'rgba(0,200,100,.7)');
-      ctx.strokeStyle=g;ctx.lineWidth=4;ctx.stroke();
-    }
-
-    // ── 워크피스 (용접 대상 판재) ──
-    if(sp.length>1){
-      const minY=Math.min(...sp.map(p=>p.y));const maxY=Math.max(...sp.map(p=>p.y));
-      ctx.fillStyle='rgba(15,25,40,.8)';
-      ctx.fillRect(W*.08, minY+30, W*.84, 12);
-      ctx.strokeStyle='rgba(60,100,130,.4)';ctx.lineWidth=1.5;
-      ctx.strokeRect(W*.08, minY+30, W*.84, 12);
-    }
-
+    ctx.beginPath();sp.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.strokeStyle='rgba(0,80,40,.4)';ctx.lineWidth=4;ctx.stroke();
+    if(wp>1){ctx.beginPath();sp.slice(0,wp).forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));const g=ctx.createLinearGradient(sp[0].x,0,sp[Math.min(wp-1,79)].x,0);g.addColorStop(0,'rgba(0,230,118,.9)');g.addColorStop(1,'rgba(0,200,100,.6)');ctx.strokeStyle=g;ctx.lineWidth=5;ctx.stroke();ctx.beginPath();sp.slice(0,wp).forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.strokeStyle='rgba(0,230,118,.15)';ctx.lineWidth=14;ctx.stroke();}
     t++;
-
-    // ── 로봇 팔 (토치 끝이 sp[wp] 위치를 따라감) ──
-    const jt=t*.022;
-    // 로봇 베이스는 화면 위쪽 중앙에 고정
-    const baseX=W*.5, baseY=H*.08;
-    // 토치 목표 위치: 현재 진행 중인 궤적 점
-    const targetPt = sp[Math.min(wp, sp.length-1)];
-
-    // 역기구학 대신 간단한 2링크 IK 근사
-    const dx=targetPt.x-baseX, dy=targetPt.y-baseY;
-    const dist=Math.hypot(dx,dy);
-    const L1=120, L2=100;
-    const clampedDist=Math.min(dist, L1+L2-5);
-    const cosA2=(clampedDist*clampedDist-L1*L1-L2*L2)/(2*L1*L2);
-    const a2=Math.acos(Math.max(-1,Math.min(1,cosA2)));
-    const a1=Math.atan2(dy,dx)-Math.atan2(L2*Math.sin(a2),L1+L2*Math.cos(a2));
-
-    const elX=baseX+L1*Math.cos(a1);
-    const elY=baseY+L1*Math.sin(a1);
-    const torchX=elX+L2*Math.cos(a1+a2);
-    const torchY=elY+L2*Math.sin(a1+a2);
-
-    // 로봇 베이스 박스
-    ctx.fillStyle='#0a1a20';ctx.fillRect(baseX-24,baseY-8,48,20);
-    ctx.strokeStyle='#00e676';ctx.lineWidth=2;ctx.strokeRect(baseX-24,baseY-8,48,20);
-
-    // 링크 1
-    ctx.beginPath();ctx.moveTo(baseX,baseY+6);ctx.lineTo(elX,elY);
-    ctx.strokeStyle='#00e676';ctx.lineWidth=5;ctx.lineCap='round';ctx.stroke();
-    // 링크 2
-    ctx.beginPath();ctx.moveTo(elX,elY);ctx.lineTo(torchX,torchY);
-    ctx.strokeStyle='#00e676';ctx.lineWidth=4;ctx.stroke();
-    // 관절 원
-    [baseX,elX].forEach((jx,i)=>{
-      const jy=[baseY+6,elY][i];
-      ctx.beginPath();ctx.arc(jx,jy,7,0,Math.PI*2);
-      ctx.fillStyle='#0b1220';ctx.fill();ctx.strokeStyle='#00e676';ctx.lineWidth=2;ctx.stroke();
-    });
-    // 토치 끝 글로우
-    const tg=ctx.createRadialGradient(torchX,torchY,0,torchX,torchY,20);
-    tg.addColorStop(0,'rgba(0,230,118,.9)');tg.addColorStop(1,'rgba(0,230,118,0)');
-    ctx.beginPath();ctx.arc(torchX,torchY,20,0,Math.PI*2);ctx.fillStyle=tg;ctx.fill();
-    ctx.beginPath();ctx.arc(torchX,torchY,6,0,Math.PI*2);ctx.fillStyle='#00e676';ctx.fill();
-
-    // 궤적 진행
-    if(t%2===0&&wp<sp.length){wp++;if(t%3===0)addSpark(sp[wp-1].x,sp[wp-1].y);}
-
-    // 스파크
-    for(let i=sparks.length-1;i>=0;i--){
-      const s=sparks[i];s.x+=s.vx;s.y+=s.vy;s.vy+=.25;s.life-=s.decay;
-      if(s.life<=0){sparks.splice(i,1);continue;}
-      ctx.beginPath();ctx.arc(s.x,s.y,s.size*s.life,0,Math.PI*2);
-      ctx.fillStyle=s.color;ctx.globalAlpha=s.life;ctx.fill();ctx.globalAlpha=1;
-    }
-
-    // HUD
-    const sim=Math.min(97.8,wp/Math.max(sp.length,1)*100);
-    ctx.font='bold 12px Share Tech Mono';
-    ctx.fillStyle='rgba(0,230,118,.85)';
-    ctx.fillText('ROBOT SIM: '+sim.toFixed(1)+'%', 18, 26);
-    ctx.fillStyle='rgba(100,130,160,.6)';
-    ctx.fillText('── HUMAN PATH  ── ROBOT PATH', 18, H-14);
-
+    const jt=t*.025;const joints=[-0.2+Math.sin(jt)*.05,.4+Math.sin(jt*.8)*.04,.5+Math.sin(jt*.6)*.03,-0.5,.25];const lens=[80,100,80,60,40];
+    let x=W*.5,y=H*.55,ang=-Math.PI/2;
+    ctx.beginPath();ctx.rect(W*.5-22,H*.55,44,18);ctx.fillStyle='#0a1a20';ctx.fill();ctx.strokeStyle='#00e676';ctx.lineWidth=2;ctx.stroke();
+    for(let i=0;i<joints.length;i++){ang+=joints[i];const nx=x+Math.cos(ang)*lens[i],ny=y+Math.sin(ang)*lens[i];ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(nx,ny);ctx.strokeStyle='#00e676';ctx.lineWidth=4;ctx.lineCap='round';ctx.stroke();ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);ctx.fillStyle='#0b1220';ctx.fill();ctx.strokeStyle='#00e676';ctx.lineWidth=2;ctx.stroke();x=nx;y=ny;}
+    ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);const tg=ctx.createRadialGradient(x,y,0,x,y,18);tg.addColorStop(0,'rgba(0,230,118,.9)');tg.addColorStop(1,'rgba(0,230,118,0)');ctx.fillStyle=tg;ctx.fill();
+    if(t%2===0&&wp<sp.length){wp++;if(t%4===0)addSpark(sp[wp-1].x,sp[wp-1].y);}
+    for(let i=sparks.length-1;i>=0;i--){const s=sparks[i];s.x+=s.vx;s.y+=s.vy;s.vy+=.3;s.life-=s.decay;if(s.life<=0){sparks.splice(i,1);continue;}ctx.beginPath();ctx.arc(s.x,s.y,s.size*s.life,0,Math.PI*2);ctx.fillStyle=s.color;ctx.globalAlpha=s.life;ctx.fill();ctx.globalAlpha=1;}
+    ctx.font='bold 12px Share Tech Mono';ctx.fillStyle='rgba(0,230,118,.8)';ctx.fillText('SIM: '+Math.min(97.8,wp/sp.length*100).toFixed(1)+'%',18,26);
     animH.succ=requestAnimationFrame(frame);
   }
   frame();
@@ -2380,333 +1840,6 @@ function initMultilingual() {
   setTimeout(()=>fireScenario(0), 1200);
 }
 
-
-
-// ═══════════════════════════════════════════════════════════════
-// S9: 현장 한국어 교육 (Korean Language Education)
-// ═══════════════════════════════════════════════════════════════
-
-const koModules = [
-  {
-    title:'🚨 안전 언어 (Safety Language)',
-    desc:'용접 현장의 즉각적인 위험 대응 언어 — 입국 전 필수 이수',
-    prog: 85,
-    scenes: [
-      {
-        label:'🔴 위험 신호 — 즉각 행동 필요',
-        words:[
-          {ko:'위험해요', rom:'wi-heom-hae-yo', en:'Danger!', native:'Nguy hiểm!', badge:'⚠ 최우선'},
-          {ko:'멈춰요', rom:'meom-chwo-yo', en:'Stop!', native:'Dừng lại!', badge:'🛑 긴급'},
-          {ko:'불이야', rom:'bu-ri-ya', en:'Fire!', native:'Cháy!', badge:'🔥 긴급'},
-          {ko:'대피해요', rom:'dae-pi-hae-yo', en:'Evacuate!', native:'Sơ tán!', badge:'🚪 대피'},
-        ]
-      },
-      {
-        label:'⚡ 전기·가스 안전',
-        words:[
-          {ko:'전기 조심', rom:'jeon-gi jo-sim', en:'Electric hazard', native:'Cẩn thận điện', badge:'⚡'},
-          {ko:'가스 새요', rom:'ga-seu sae-yo', en:'Gas leak', native:'Rò khí gas', badge:'💨'},
-          {ko:'마스크 써요', rom:'ma-seu-keu sseo-yo', en:'Wear mask', native:'Đeo mặt nạ', badge:'😷'},
-          {ko:'장갑 끼세요', rom:'jang-gap kki-se-yo', en:'Wear gloves', native:'Đeo găng tay', badge:'🧤'},
-        ]
-      },
-      {
-        label:'🏥 응급 상황',
-        words:[
-          {ko:'다쳤어요', rom:'da-chyeo-sseo-yo', en:'I'm injured', native:'Tôi bị thương', badge:'🩹'},
-          {ko:'병원 가요', rom:'byeong-won ga-yo', en:'Go to hospital', native:'Đi bệnh viện', badge:'🏥'},
-          {ko:'구급차요', rom:'gu-geup-cha-yo', en:'Ambulance!', native:'Xe cứu thương!', badge:'🚑'},
-        ]
-      }
-    ],
-    demos:[
-      {ko:'토치 내려요! <span class="cb-highlight">위험해요</span>', native:'Hạ đuốc xuống! Nguy hiểm!', rom:'to-chi nae-ryeo-yo! wi-heom-hae-yo!', note:'용접 각도 오류 → 즉시 안전 경고'},
-      {ko:'<span class="cb-highlight">멈춰요</span>! 압력이 높아요', native:'Dừng lại! Áp suất quá cao', rom:'meom-chwo-yo! ap-ryeogi no-pa-yo', note:'압력 초과 → 작업 중단 지시'},
-      {ko:'지금 <span class="cb-highlight">대피해요</span> — 가스 감지', native:'Hãy sơ tán ngay — phát hiện khí gas', rom:'ji-geum dae-pi-hae-yo', note:'가스 센서 알람 연동'},
-    ]
-  },
-  {
-    title:'🔧 작업 지시어 (Work Commands)',
-    desc:'AI 코치가 실시간으로 사용하는 용접 작업 핵심 지시어',
-    prog: 62,
-    scenes: [
-      {
-        label:'📐 방향·위치',
-        words:[
-          {ko:'위로', rom:'wi-ro', en:'Upward', native:'Lên trên', badge:'↑'},
-          {ko:'아래로', rom:'a-rae-ro', en:'Downward', native:'Xuống dưới', badge:'↓'},
-          {ko:'왼쪽', rom:'oen-jjok', en:'Left', native:'Bên trái', badge:'←'},
-          {ko:'오른쪽', rom:'o-reun-jjok', en:'Right', native:'Bên phải', badge:'→'},
-          {ko:'앞으로', rom:'a-peu-ro', en:'Forward', native:'Về phía trước', badge:'↗'},
-        ]
-      },
-      {
-        label:'⚙ 속도·각도',
-        words:[
-          {ko:'빠르게', rom:'ppa-reu-ge', en:'Faster', native:'Nhanh hơn', badge:'⚡'},
-          {ko:'천천히', rom:'cheon-cheon-hi', en:'Slower', native:'Chậm lại', badge:'🐢'},
-          {ko:'각도 낮춰요', rom:'gak-do nach-weo-yo', en:'Lower angle', native:'Hạ góc độ', badge:'📐'},
-          {ko:'더 기울여요', rom:'deo gi-ul-yeo-yo', en:'Tilt more', native:'Nghiêng hơn', badge:'↙'},
-        ]
-      },
-      {
-        label:'✅ 확인·완료',
-        words:[
-          {ko:'됐어요', rom:'dwaet-sseo-yo', en:'Done / OK', native:'Xong rồi', badge:'✓'},
-          {ko:'다시 해요', rom:'da-si hae-yo', en:'Do it again', native:'Làm lại đi', badge:'🔄'},
-          {ko:'잘했어요', rom:'jal-haet-sseo-yo', en:'Well done!', native:'Làm tốt lắm!', badge:'⭐'},
-          {ko:'잠깐요', rom:'jam-kkan-yo', en:'Wait a moment', native:'Đợi một chút', badge:'✋'},
-        ]
-      }
-    ],
-    demos:[
-      {ko:'<span class="cb-highlight">오른쪽</span>으로 5cm 이동하세요', native:'Di chuyển 5cm sang bên phải', rom:'o-reun-jjok-eu-ro 5cm i-dong-ha-se-yo', note:'궤적 오차 감지 → 위치 교정'},
-      {ko:'<span class="cb-highlight">천천히</span>! 속도가 너무 빠릅니다', native:'Chậm lại! Tốc độ quá nhanh', rom:'cheon-cheon-hi! sok-do-ga neo-mu ppa-reum-ni-da', note:'속도 초과 → 감속 지시'},
-      {ko:'<span class="cb-highlight">잘했어요</span>! 비드가 완벽합니다', native:'Làm tốt lắm! Mối hàn hoàn hảo', rom:'jal-haet-sseo-yo! bi-deu-ga wan-byeok-ham-ni-da', note:'완료 확인 → 긍정 강화'},
-    ]
-  },
-  {
-    title:'🛠 공구·장비 이름 (Tools & Equipment)',
-    desc:'용접 현장 장비를 한국어로 명확히 소통하기 위한 핵심 어휘',
-    prog: 44,
-    scenes: [
-      {
-        label:'🔥 용접 기본 장비',
-        words:[
-          {ko:'토치', rom:'to-chi', en:'Torch', native:'Đuốc hàn', badge:'🔥'},
-          {ko:'용접봉', rom:'yong-jeop-bong', en:'Welding rod', native:'Que hàn', badge:'⚡'},
-          {ko:'슬래그', rom:'seul-lae-geu', en:'Slag', native:'Xỉ hàn', badge:'🪨'},
-          {ko:'비드', rom:'bi-deu', en:'Bead (weld)', native:'Mối hàn', badge:'〰'},
-        ]
-      },
-      {
-        label:'🦺 보호 장구',
-        words:[
-          {ko:'보호면', rom:'bo-ho-myeon', en:'Face shield', native:'Kính hàn', badge:'🥽'},
-          {ko:'안전화', rom:'an-jeon-hwa', en:'Safety shoes', native:'Giày bảo hộ', badge:'👟'},
-          {ko:'헬멧', rom:'hel-met', en:'Helmet', native:'Mũ bảo hiểm', badge:'⛑'},
-          {ko:'작업복', rom:'ja-geop-bok', en:'Work suit', native:'Đồ bảo hộ', badge:'🦺'},
-        ]
-      },
-      {
-        label:'🔩 가공 공구',
-        words:[
-          {ko:'그라인더', rom:'geu-ra-in-deo', en:'Grinder', native:'Máy mài', badge:'🔩'},
-          {ko:'해머', rom:'hae-meo', en:'Hammer', native:'Búa', badge:'🔨'},
-          {ko:'클램프', rom:'keul-laem-peu', en:'Clamp', native:'Kẹp', badge:'🗜'},
-          {ko:'드릴', rom:'deu-ril', en:'Drill', native:'Máy khoan', badge:'🪛'},
-        ]
-      }
-    ],
-    demos:[
-      {ko:'<span class="cb-highlight">보호면</span> 쓰고 시작하세요', native:'Đeo kính hàn rồi hãy bắt đầu', rom:'bo-ho-myeon sseu-go si-jak-ha-se-yo', note:'작업 시작 전 안전 점검'},
-      {ko:'<span class="cb-highlight">토치</span> 각도를 45도로 맞춰요', native:'Điều chỉnh góc đuốc hàn 45 độ', rom:'to-chi gak-do-reul 45do-ro mat-chweo-yo', note:'각도 교정 → 장비명 자연 노출'},
-      {ko:'<span class="cb-highlight">슬래그</span>를 먼저 제거하세요', native:'Hãy loại bỏ xỉ hàn trước', rom:'seul-lae-geu-reul meon-jeo je-geo-ha-se-yo', note:'품질 점검 → 전문 어휘 학습'},
-    ]
-  },
-  {
-    title:'🏭 직장 생활 (Workplace Life)',
-    desc:'한국 제조 현장에서 매일 필요한 생활 언어',
-    prog: 28,
-    scenes: [
-      {
-        label:'🕐 근태 관리',
-        words:[
-          {ko:'출근했어요', rom:'chul-geun-haet-sseo-yo', en:'I'm at work', native:'Tôi đã đến làm', badge:'🏃'},
-          {ko:'퇴근해요', rom:'toe-geun-hae-yo', en:'Going home', native:'Đi về', badge:'🏠'},
-          {ko:'잔업 있어요', rom:'jan-eop it-sseo-yo', en:'Overtime work', native:'Có tăng ca', badge:'⏰'},
-          {ko:'휴가예요', rom:'hyu-ga-ye-yo', en:'I'm on leave', native:'Tôi nghỉ phép', badge:'🌴'},
-        ]
-      },
-      {
-        label:'👥 직장 호칭',
-        words:[
-          {ko:'반장님', rom:'ban-jang-nim', en:'Team leader', native:'Tổ trưởng', badge:'👷'},
-          {ko:'소장님', rom:'so-jang-nim', en:'Site manager', native:'Giám sát', badge:'🏗'},
-          {ko:'동료', rom:'dong-ryo', en:'Colleague', native:'Đồng nghiệp', badge:'🤝'},
-          {ko:'신입이에요', rom:'sin-ib-i-e-yo', en:'I'm new', native:'Tôi mới vào', badge:'🌱'},
-        ]
-      }
-    ],
-    demos:[
-      {ko:'<span class="cb-highlight">반장님</span>, 용접 확인해 주세요', native:'Anh tổ trưởng, kiểm tra hàn giùm tôi', rom:'ban-jang-nim, yong-jeop hwa-gin-hae ju-se-yo', note:'품질 검사 요청 → 호칭 학습'},
-      {ko:'오늘 <span class="cb-highlight">잔업</span> 있나요?', native:'Hôm nay có tăng ca không?', rom:'o-neul jan-eop it-na-yo?', note:'근무 일정 소통'},
-    ]
-  },
-  {
-    title:'⚡ 기술 심화 (Technical Terms)',
-    desc:'용접 도면·검사·공정 전문 용어 — 숙련도 상승을 위한 고급 어휘',
-    prog: 10,
-    scenes: [
-      {
-        label:'📋 용접 유형',
-        words:[
-          {ko:'맞대기 용접', rom:'mat-dae-gi yong-jeop', en:'Butt weld', native:'Hàn giáp mối', badge:'━'},
-          {ko:'필릿 용접', rom:'pil-lit yong-jeop', en:'Fillet weld', native:'Hàn góc', badge:'L'},
-          {ko:'오버레이', rom:'o-beo-re-i', en:'Overlay weld', native:'Đắp hàn', badge:'⊕'},
-          {ko:'전진법', rom:'jeon-jin-beop', en:'Forward technique', native:'Kỹ thuật tiến', badge:'→'},
-        ]
-      },
-      {
-        label:'🔍 품질 검사',
-        words:[
-          {ko:'기공', rom:'gi-gong', en:'Porosity (defect)', native:'Lỗ khí', badge:'○'},
-          {ko:'언더컷', rom:'eon-deo-keot', en:'Undercut', native:'Cắt ngầm', badge:'⌐'},
-          {ko:'합격', rom:'hap-gyeok', en:'Pass / Accept', native:'Đạt tiêu chuẩn', badge:'✓'},
-          {ko:'불합격', rom:'bul-hap-gyeok', en:'Fail / Reject', native:'Không đạt', badge:'✗'},
-        ]
-      }
-    ],
-    demos:[
-      {ko:'<span class="cb-highlight">필릿 용접</span> 모드로 변경합니다', native:'Chuyển sang chế độ hàn góc', rom:'pil-lit yong-jeop mo-deu-ro byeon-gyeong', note:'공정 전환 → 전문 용어 노출'},
-      {ko:'<span class="cb-highlight">기공</span> 감지 — 재용접 필요', native:'Phát hiện lỗ khí — cần hàn lại', rom:'gi-gong gam-ji — jae-yong-jeop pil-yo', note:'결함 감지 → 검사 용어 학습'},
-    ]
-  }
-];
-
-let activeModule = 0;
-let koTodayCount = 3;
-let koTotalCount = 47;
-let koDemoIdx = 0;
-let koChips = ['낮추세요','위험','멈춰요'];
-let koSessionNew = 0;
-
-const koLangMeta = {
-  vn:{flag:'🇻🇳', name:'Nguyen Van A', level:'학습 중 · LEVEL 2'},
-  id:{flag:'🇮🇩', name:'Budi Santoso', level:'입문 · LEVEL 1'},
-  ph:{flag:'🇵🇭', name:'Jose Dela Cruz', level:'중급 · LEVEL 3'},
-  th:{flag:'🇹🇭', name:'Somchai Jaidee', level:'학습 중 · LEVEL 2'},
-  zh:{flag:'🇨🇳', name:'Wang Fang', level:'고급 · LEVEL 4'},
-  en:{flag:'🇺🇸', name:'James Wilson', level:'고급 · LEVEL 4'},
-};
-
-function selectModule(idx) {
-  activeModule = idx;
-  koDemoIdx = 0;
-  document.querySelectorAll('.module-btn').forEach((b,i)=>{
-    b.classList.toggle('active', i===idx);
-  });
-  const mod = koModules[idx];
-  document.getElementById('ko-mod-title').textContent = mod.title;
-  document.getElementById('ko-mod-desc').textContent = mod.desc;
-  renderKoCards(idx);
-  renderCoachDemo(idx, 0);
-}
-
-function renderKoCards(idx) {
-  const mod = koModules[idx];
-  const area = document.getElementById('ko-cards-area');
-  area.innerHTML = mod.scenes.map(scene => `
-    <div class="ko-scene-strip">
-      <div class="ko-scene-label">${scene.label}</div>
-      <div class="ko-words-row">
-        ${scene.words.map(w => `
-          <div class="ko-word-card" onclick="playKoWord(this, '${w.ko}', '${w.rom}')">
-            <span class="wc-play">🔊</span>
-            <div class="wc-ko">${w.ko}</div>
-            <div class="wc-rom">${w.rom}</div>
-            <div class="wc-trans">${w.en}</div>
-            <div class="wc-native">${w.native}</div>
-            <div class="wc-badge">${w.badge}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
-}
-
-function playKoWord(el, ko, rom) {
-  document.querySelectorAll('.ko-word-card').forEach(c=>c.classList.remove('playing'));
-  el.classList.add('playing');
-  speakText(ko, 'ko', 0.9, 1.1);
-  // add chip
-  if(!koChips.includes(ko) && koChips.length < 9) {
-    koChips.push(ko);
-    koSessionNew++;
-    koTodayCount++;
-    koTotalCount++;
-    renderKoDevice();
-  }
-  setTimeout(()=>{
-    el.classList.remove('playing');
-    el.classList.add('learned');
-  }, 1800);
-}
-
-function renderCoachDemo(modIdx, demoIdx) {
-  const demos = koModules[modIdx].demos;
-  if(!demos || !demos[demoIdx]) return;
-  const d = demos[demoIdx];
-  document.getElementById('ko-cb-ko').innerHTML = d.ko;
-  document.getElementById('ko-cb-native').textContent = d.native;
-  document.getElementById('ko-cb-phonetic').textContent = d.rom + (d.note ? ' — ' + d.note : '');
-}
-
-function playCoachDemo() {
-  const demos = koModules[activeModule].demos;
-  const d = demos[koDemoIdx];
-  if(!d) return;
-  const btn = document.getElementById('ko-play-btn');
-  btn.classList.add('active');
-  const rawKo = d.ko.replace(/<[^>]+>/g,'');
-  speakText(rawKo, 'ko', 0.85, 1.0);
-  setTimeout(()=>{
-    speakText(d.native.split(' / ')[0], 'vn', 0.95, 1.0);
-  }, rawKo.length * 150 + 500);
-  setTimeout(()=>btn.classList.remove('active'), 3000);
-}
-
-function nextCoachDemo() {
-  const demos = koModules[activeModule].demos;
-  koDemoIdx = (koDemoIdx + 1) % demos.length;
-  renderCoachDemo(activeModule, koDemoIdx);
-}
-
-function renderKoDevice() {
-  // chips
-  const chipsEl = document.getElementById('ko-chips');
-  chipsEl.innerHTML = koChips.slice(-8).map(c=>`<div class="ko-chip">${c}</div>`).join('');
-  // counters
-  document.getElementById('ko-today').textContent = koTodayCount;
-  document.getElementById('ko-total').textContent = koTotalCount;
-  document.getElementById('ko-acc').textContent = '78%';
-  document.getElementById('ko-ring-num').textContent = koTodayCount;
-  document.getElementById('ko-total-disp').textContent = koTotalCount;
-  document.getElementById('ko-ring-pct').textContent = '+' + koSessionNew;
-  // bar chart
-  const bars = document.getElementById('ko-bar-chart');
-  if(bars) {
-    const data = [12,18,24,31,38,47].slice(-6);
-    const maxV = Math.max(...data);
-    bars.innerHTML = data.map((v,i)=>`
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:1px;">
-        <div style="width:100%;background:${i===data.length-1?'#22c55e':'rgba(34,197,94,0.35)'};border-radius:2px 2px 0 0;height:${Math.round(v/maxV*24)}px;transition:height .4s"></div>
-      </div>
-    `).join('');
-  }
-  // sync with active lang
-  const lm = koLangMeta[activeLang] || koLangMeta.vn;
-  document.getElementById('ko-flag').textContent = lm.flag;
-  document.getElementById('ko-name').textContent = lm.name;
-  document.getElementById('ko-level').textContent = lm.level;
-  // device coach msg from current demo
-  const demos = koModules[activeModule].demos;
-  const d = demos[koDemoIdx] || demos[0];
-  document.getElementById('kcm-ko').innerHTML = d.ko;
-  document.getElementById('kcm-native').textContent = d.native.split(' / ')[0];
-  document.getElementById('kcm-rom').textContent = d.rom;
-}
-
-function initKoreanEdu() {
-  activeModule = 0;
-  koDemoIdx = 0;
-  selectModule(0);
-  renderKoDevice();
-  // auto-demo after 1.5s
-  setTimeout(()=>{
-    playCoachDemo();
-  }, 1500);
-}
 
 renderStepNav();
 switchMode('capture');
