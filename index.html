@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeldAI Platform — Investor Demo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap');
+
+:root {
+  --bg:#04080f; --surface:#080e1a; --panel:#0b1220; --border:#1a2a40;
+  --accent:#f5a623; --accent2:#ff6b35;
+  --blue:#1e90ff; --green:#00e676; --red:#ff3d3d; --purple:#a855f7;
+  --text:#c8d8e8; --dim:#4a6080;
+  --mono:'Share Tech Mono',monospace;
+  --head:'Barlow Condensed',sans-serif;
+  --body:'Barlow',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--body);height:100vh;overflow:hidden;user-select:none;}
+.app{width:100vw;height:100vh;display:flex;flex-direction:column;}
+
+/* ── HEADER ── */
+header{display:flex;align-items:center;justify-content:space-between;padding:10px 28px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10;}
+.logo{font-family:var(--head);font-size:24px;font-weight:900;letter-spacing:2px;color:#fff;}
+.logo span{color:var(--accent);}
+.badge{font-family:var(--mono);font-size:10px;background:var(--accent);color:#000;padding:2px 8px;border-radius:2px;margin-left:8px;vertical-align:middle;}
+.status-bar{display:flex;gap:20px;align-items:center;font-family:var(--mono);font-size:11px;color:var(--dim);}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);display:inline-block;margin-right:5px;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── MODE TABS ── */
+.mode-tabs{display:flex;background:var(--bg);border-bottom:2px solid var(--border);flex-shrink:0;}
+.mode-tab{flex:1;padding:8px 0;text-align:center;font-family:var(--head);font-size:12px;font-weight:700;letter-spacing:1.5px;color:var(--dim);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .25s;position:relative;}
+.mode-tab:hover{color:var(--text);}
+.mode-tab.capture.active{color:var(--accent);border-bottom-color:var(--accent);}
+.mode-tab.train.active{color:#00e5ff;border-bottom-color:#00e5ff;}
+.mode-tab .mode-icon{font-size:14px;margin-right:6px;}
+.mode-tab .mode-sub{font-size:9px;display:block;color:var(--dim);margin-top:1px;letter-spacing:1px;}
+.mode-tab.capture.active .mode-sub{color:rgba(245,166,35,.6);}
+.mode-tab.train.active .mode-sub{color:rgba(0,229,255,.5);}
+
+/* ── STEP NAV ── */
+.step-nav{display:flex;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;transition:all .3s;}
+.step-btn{flex:1;padding:8px 4px;text-align:center;font-family:var(--head);font-size:12px;font-weight:600;letter-spacing:.8px;color:var(--dim);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .2s;position:relative;}
+.step-btn .snum{font-family:var(--mono);font-size:9px;display:block;color:var(--dim);margin-bottom:1px;}
+.step-btn:hover{color:var(--text);background:rgba(255,255,255,.03);}
+.step-btn.active.cap{color:var(--accent);border-bottom-color:var(--accent);}
+.step-btn.active.tr{color:#00e5ff;border-bottom-color:#00e5ff;}
+.step-btn.done{color:var(--green);}
+.step-btn.done::after{content:'✓';position:absolute;top:5px;right:8px;font-size:9px;color:var(--green);}
+
+/* ── SCREENS ── */
+.screens{flex:1;position:relative;overflow:hidden;}
+.screen{position:absolute;inset:0;display:none;opacity:0;transition:opacity .35s;}
+.screen.active{display:flex;opacity:1;}
+
+/* ── SHARED ── */
+.panel-l{width:290px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:18px;gap:16px;overflow-y:auto;}
+.panel-r{width:250px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;padding:18px;gap:10px;overflow-y:auto;}
+.panel-m{flex:1;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.slabel{font-family:var(--head);font-size:10px;font-weight:700;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:4px;}
+.slabel.cyan{color:#00e5ff;}
+.drow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);}
+.drow .k{color:var(--dim);font-family:var(--mono);font-size:10px;}
+.drow .v{color:var(--text);font-family:var(--mono);font-size:10px;font-weight:bold;}
+.drow .v.g{color:var(--green);}
+.drow .v.o{color:var(--accent);}
+.drow .v.r{color:var(--red);}
+.drow .v.c{color:#00e5ff;}
+
+/* ── FOOTER ── */
+footer{background:var(--surface);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:8px 28px;flex-shrink:0;}
+.nav-btn{padding:7px 20px;font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:1px;border-radius:3px;cursor:pointer;border:none;transition:all .2s;}
+.nav-btn.prev{background:none;color:var(--dim);border:1px solid var(--border);}
+.nav-btn.prev:hover{color:var(--text);border-color:var(--text);}
+.nav-btn.cap-next{background:var(--accent);color:#000;}
+.nav-btn.cap-next:hover{background:#ffb93d;}
+.nav-btn.tr-next{background:#00e5ff;color:#000;}
+.nav-btn.tr-next:hover{background:#33ecff;}
+.footer-info{font-family:var(--mono);font-size:10px;color:var(--dim);}
+
+/* ══════════════════════════════════════
+   CAPTURE MODE SCREENS (1-5)
+══════════════════════════════════════ */
+
+/* S1 Upload */
+#s1{align-items:center;justify-content:center;flex-direction:column;gap:22px;}
+.sample-grid{display:flex;gap:18px;}
+.sample-card{width:270px;background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color .3s,transform .2s,box-shadow .2s;position:relative;}
+.sample-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 10px 28px rgba(245,166,35,.15);}
+.sample-card.selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(245,166,35,.3);}
+.svw{width:100%;height:148px;background:#060c16;position:relative;overflow:hidden;}
+.svw video{width:100%;height:100%;object-fit:cover;}
+.play-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);font-size:36px;transition:opacity .2s;}
+.sample-card:hover .play-ov{opacity:0;}
+.vlab{position:absolute;bottom:5px;left:7px;font-family:var(--mono);font-size:9px;color:#fff;background:rgba(0,0,0,.6);padding:2px 6px;border-radius:2px;}
+.sinfo{padding:10px 12px;}
+.sname{font-family:var(--head);font-size:15px;font-weight:700;color:#fff;margin-bottom:3px;}
+.smeta{font-family:var(--mono);font-size:9px;color:var(--dim);line-height:1.6;}
+.stags{display:flex;gap:3px;flex-wrap:wrap;margin-top:6px;}
+.stag{font-family:var(--mono);font-size:8px;padding:2px 6px;border-radius:2px;}
+.stag.b{background:rgba(30,144,255,.12);color:var(--blue);border:1px solid rgba(30,144,255,.25);}
+.stag.o{background:rgba(245,166,35,.1);color:var(--accent);border:1px solid rgba(245,166,35,.2);}
+.stag.g{background:rgba(0,230,118,.08);color:var(--green);border:1px solid rgba(0,230,118,.2);}
+.selbadge{position:absolute;top:8px;right:8px;background:var(--accent);color:#000;font-family:var(--mono);font-size:8px;font-weight:bold;padding:2px 7px;border-radius:2px;display:none;}
+.sample-card.selected .selbadge{display:block;}
+.or-row{display:flex;align-items:center;gap:14px;width:560px;}
+.or-line{flex:1;height:1px;background:var(--border);}
+.or-text{font-family:var(--mono);font-size:10px;color:var(--dim);}
+.upload-zone{width:560px;padding:16px;border:2px dashed var(--border);border-radius:6px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color .3s,background .3s;background:var(--panel);}
+.upload-zone:hover{border-color:var(--blue);background:rgba(30,144,255,.04);}
+.upload-zone svg{width:24px;height:24px;fill:var(--dim);flex-shrink:0;}
+.uzt1{font-family:var(--head);font-size:14px;font-weight:700;color:var(--text);}
+.uzt2{font-family:var(--mono);font-size:9px;color:var(--dim);margin-top:2px;}
+.svi{width:560px;padding:8px 14px;background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.2);border-radius:4px;display:none;align-items:center;gap:10px;}
+.svi.show{display:flex;}
+.svi-t{font-family:var(--mono);font-size:10px;color:var(--green);}
+.analyze-btn{width:560px;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;font-family:var(--head);font-size:19px;font-weight:900;letter-spacing:2px;border:none;border-radius:4px;cursor:pointer;opacity:.4;pointer-events:none;transition:opacity .3s,transform .15s,box-shadow .15s;}
+.analyze-btn.ready{opacity:1;pointer-events:all;}
+.analyze-btn.ready:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(245,166,35,.35);}
+
+/* S2 Motion */
+#s2{flex-direction:row;}
+
+/* S3 Learning */
+#s3{flex-direction:column;}
+.ltop{flex:1;display:flex;}
+.cpanel{flex:1;padding:16px 16px 8px;display:flex;flex-direction:column;border-right:1px solid var(--border);}
+.cpanel:last-child{border-right:none;}
+.ctitle{font-family:var(--head);font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.csub{font-family:var(--mono);font-size:9px;color:var(--dim);margin-bottom:8px;}
+.carea{flex:1;position:relative;}
+.carea canvas{width:100%!important;height:100%!important;}
+.lbot{height:110px;flex-shrink:0;background:var(--panel);border-top:1px solid var(--border);display:flex;align-items:center;}
+.epdisplay{width:180px;flex-shrink:0;padding:14px 20px;border-right:1px solid var(--border);}
+.epbig{font-family:var(--head);font-size:44px;font-weight:900;color:var(--accent);line-height:1;}
+.eplabel{font-family:var(--mono);font-size:9px;color:var(--dim);margin-top:3px;}
+.mgrid{flex:1;display:flex;padding:0 20px;gap:28px;align-items:center;}
+.mitem{text-align:center;}
+.mval{font-family:var(--mono);font-size:26px;font-weight:bold;color:var(--text);}
+.mval.conv{color:var(--green);}
+.mlbl{font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:3px;}
+.logp{width:240px;flex-shrink:0;border-left:1px solid var(--border);padding:10px 14px;overflow:hidden;display:flex;flex-direction:column;gap:2px;}
+.lline{font-family:var(--mono);font-size:9px;color:var(--dim);white-space:nowrap;}
+.lline.w{color:var(--accent);}
+.lline.ok{color:var(--green);}
+.lcur{display:inline-block;width:6px;height:10px;background:var(--accent);vertical-align:middle;animation:blink .7s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* S4 Fail */
+#s4{flex-direction:row;}
+.robot-vp{flex:1;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 60%,#0a1020 0%,#04080f 70%);}
+.alert-ban{position:absolute;top:16px;left:50%;transform:translateX(-50%);background:rgba(255,61,61,.15);border:1px solid var(--red);padding:10px 24px;border-radius:4px;font-family:var(--mono);font-size:12px;color:var(--red);display:flex;align-items:center;gap:8px;animation:flash 1s infinite;white-space:nowrap;}
+@keyframes flash{0%,100%{border-color:var(--red)}50%{border-color:transparent}}
+.fail-side{width:270px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--border);padding:18px;display:flex;flex-direction:column;gap:14px;}
+.eitem{background:rgba(255,61,61,.06);border:1px solid rgba(255,61,61,.2);border-left:3px solid var(--red);padding:8px 10px;border-radius:2px;}
+.etitle{font-family:var(--mono);font-size:10px;color:var(--red);margin-bottom:3px;}
+.edesc{font-family:var(--mono);font-size:9px;color:var(--dim);line-height:1.5;}
+.recalc{background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);padding:8px 12px;border-radius:4px;font-family:var(--mono);font-size:10px;color:var(--accent);text-align:center;animation:pulse 1.2s infinite;}
+
+/* S5 Success */
+#s5{flex-direction:row;}
+.succ-vp{flex:1;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 60%,#051210 0%,#04080f 70%);}
+.succ-ban{position:absolute;top:16px;left:50%;transform:translateX(-50%);background:rgba(0,230,118,.1);border:1px solid var(--green);padding:10px 24px;border-radius:4px;font-family:var(--mono);font-size:12px;color:var(--green);display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.succ-side{width:320px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--border);padding:18px;display:flex;flex-direction:column;gap:14px;}
+.kgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.kcard{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:10px;text-align:center;}
+.kval{font-family:var(--head);font-size:28px;font-weight:900;color:var(--green);}
+.kunit{font-family:var(--mono);font-size:9px;color:var(--accent);}
+.klbl{font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:3px;}
+.deploy-btn{width:100%;padding:12px;background:linear-gradient(135deg,#00c853,#00e676);color:#000;font-family:var(--head);font-size:17px;font-weight:900;letter-spacing:2px;border:none;border-radius:4px;cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.deploy-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,230,118,.3);}
+.cbar-row{display:flex;flex-direction:column;gap:3px;margin-bottom:4px;}
+.cbar-lbl{font-family:var(--mono);font-size:9px;color:var(--dim);}
+.cbar-bars{display:flex;gap:5px;align-items:center;}
+.cbar{height:12px;border-radius:2px;font-family:var(--mono);font-size:8px;display:flex;align-items:center;padding:0 5px;color:#000;font-weight:bold;min-width:28px;}
+.cbar.b4{background:var(--red);}
+.cbar.af{background:var(--green);}
+.cdiff{font-family:var(--mono);font-size:9px;color:var(--green);margin-left:3px;}
+
+/* ══════════════════════════════════════
+   TRAIN MODE SCREENS (6-7)
+══════════════════════════════════════ */
+
+/* S6 Live Coaching */
+#s6{flex-direction:row;}
+
+.coach-viewport{flex:1;position:relative;overflow:hidden;background:#02060e;}
+#coach-canvas{width:100%;height:100%;}
+
+/* feedback overlay badges */
+.fb-overlay{position:absolute;pointer-events:none;}
+
+.coach-feedback-panel{
+  width:320px;flex-shrink:0;
+  background:var(--panel);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+
+/* Skill Score Hero */
+.score-hero{
+  padding:20px;
+  background:linear-gradient(135deg,#020d1a,#041220);
+  border-bottom:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;
+  flex-shrink:0;
+}
+.score-label{font-family:var(--mono);font-size:10px;color:#00e5ff;letter-spacing:2px;margin-bottom:6px;}
+.score-ring{position:relative;width:110px;height:110px;}
+.score-ring svg{width:110px;height:110px;transform:rotate(-90deg);}
+.score-ring .ring-bg{fill:none;stroke:rgba(0,229,255,.1);stroke-width:8;}
+.score-ring .ring-fill{fill:none;stroke:#00e5ff;stroke-width:8;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset 1s ease;}
+.score-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-big{font-family:var(--head);font-size:36px;font-weight:900;color:#fff;line-height:1;}
+.score-unit{font-family:var(--mono);font-size:9px;color:#00e5ff;}
+.score-delta{font-family:var(--mono);font-size:10px;color:var(--green);margin-top:6px;}
+
+/* Live AI Messages */
+.ai-messages{flex:1;overflow:hidden;display:flex;flex-direction:column;padding:12px;gap:6px;position:relative;}
+.ai-msg{
+  padding:8px 12px;border-radius:4px;
+  font-family:var(--mono);font-size:10px;line-height:1.5;
+  border-left:3px solid;
+  animation:slideIn .3s ease;
+  flex-shrink:0;
+}
+@keyframes slideIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+.ai-msg.warn{background:rgba(255,61,61,.08);border-color:var(--red);color:#ff8080;}
+.ai-msg.ok{background:rgba(0,230,118,.07);border-color:var(--green);color:#7fffa8;}
+.ai-msg.tip{background:rgba(0,229,255,.07);border-color:#00e5ff;color:#7de8ff;}
+.ai-msg.neutral{background:rgba(74,96,128,.1);border-color:var(--dim);color:var(--text);}
+.ai-msg .msg-time{font-size:8px;color:var(--dim);margin-bottom:2px;}
+.ai-msg .msg-icon{margin-right:4px;}
+
+/* Live Metrics */
+.live-metrics{padding:12px;border-top:1px solid var(--border);flex-shrink:0;}
+.lm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.lm-item{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:8px;text-align:center;}
+.lm-val{font-family:var(--mono);font-size:16px;font-weight:bold;}
+.lm-lbl{font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:2px;}
+.lm-bar{height:3px;background:var(--border);border-radius:2px;margin-top:4px;overflow:hidden;}
+.lm-fill{height:100%;border-radius:2px;transition:width .5s ease;}
+
+/* Trainee info strip */
+.trainee-strip{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.trainee-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#00e5ff22,#00e5ff44);border:1px solid #00e5ff44;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.trainee-info{flex:1;}
+.trainee-name{font-family:var(--head);font-size:14px;font-weight:700;color:#fff;}
+.trainee-meta{font-family:var(--mono);font-size:9px;color:var(--dim);}
+.session-badge{font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:2px;background:rgba(0,229,255,.12);color:#00e5ff;border:1px solid rgba(0,229,255,.25);}
+
+/* S7 Progress Dashboard */
+#s7{flex-direction:column;}
+.dash-top{flex:1;display:flex;gap:0;}
+.dash-left{width:320px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);padding:18px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+.dash-main{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+.dash-right{width:280px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--border);padding:18px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+
+/* Skill level card */
+.level-card{background:linear-gradient(135deg,#020d1a,#041825);border:1px solid rgba(0,229,255,.2);border-radius:6px;padding:16px;text-align:center;}
+.level-title{font-family:var(--mono);font-size:9px;color:#00e5ff;letter-spacing:2px;margin-bottom:8px;}
+.level-badge{font-family:var(--head);font-size:42px;font-weight:900;color:#00e5ff;line-height:1;}
+.level-name{font-family:var(--head);font-size:18px;font-weight:700;color:#fff;margin-top:4px;}
+.level-sub{font-family:var(--mono);font-size:9px;color:var(--dim);margin-top:3px;}
+.cert-progress{margin-top:12px;}
+.cert-bar-wrap{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.cert-bar-fill{height:100%;background:linear-gradient(90deg,#00e5ff,#00b8d4);border-radius:4px;transition:width 1.5s ease;}
+.cert-labels{display:flex;justify-content:space-between;font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:4px;}
+
+/* Stat cards */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:10px;text-align:center;}
+.stat-val{font-family:var(--head);font-size:28px;font-weight:900;}
+.stat-lbl{font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:2px;}
+
+/* Session history */
+.session-list{display:flex;flex-direction:column;gap:5px;}
+.sess-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surface);border:1px solid var(--border);border-radius:3px;}
+.sess-date{font-family:var(--mono);font-size:9px;color:var(--dim);width:60px;flex-shrink:0;}
+.sess-bar-wrap{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.sess-bar{height:100%;border-radius:4px;}
+.sess-score{font-family:var(--mono);font-size:10px;font-weight:bold;width:36px;text-align:right;}
+.sess-delta{font-family:var(--mono);font-size:9px;width:36px;text-align:right;}
+
+/* Skill radar */
+.skill-grid{display:flex;flex-direction:column;gap:6px;}
+.skill-row{display:flex;flex-direction:column;gap:2px;}
+.skill-name{font-family:var(--mono);font-size:9px;color:var(--dim);display:flex;justify-content:space-between;}
+.skill-bar-bg{height:10px;background:var(--border);border-radius:5px;overflow:hidden;}
+.skill-bar-fill{height:100%;border-radius:5px;position:relative;}
+.skill-bar-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.1),transparent);}
+
+/* Certify button */
+.certify-btn{width:100%;padding:12px;background:linear-gradient(135deg,#0070a8,#00e5ff);color:#000;font-family:var(--head);font-size:16px;font-weight:900;letter-spacing:2px;border:none;border-radius:4px;cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.certify-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,229,255,.35);}
+
+/* Tag */
+.tbadge{display:inline-block;padding:2px 8px;font-family:var(--mono);font-size:9px;border-radius:2px;margin:2px 2px 2px 0;}
+.tbadge.b{background:rgba(30,144,255,.15);color:var(--blue);border:1px solid rgba(30,144,255,.3);}
+.tbadge.g{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.25);}
+.tbadge.c{background:rgba(0,229,255,.1);color:#00e5ff;border:1px solid rgba(0,229,255,.25);}
+
+/* Progress overlay */
+.prog-ov{position:fixed;inset:0;background:rgba(4,8,15,.92);z-index:100;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;}
+.prog-ov.show{display:flex;}
+.prog-ov-title{font-family:var(--head);font-size:30px;font-weight:900;color:#fff;}
+.prog-ov-sub{font-family:var(--mono);font-size:11px;color:var(--dim);}
+.prog-bw{width:480px;}
+.prog-lr{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:6px;}
+.prog-b{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.prog-f{height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--accent));transition:width .15s linear;border-radius:3px;}
+.prog-steps{display:flex;flex-direction:column;gap:5px;width:480px;}
+.pstep{font-family:var(--mono);font-size:10px;color:var(--dim);display:flex;align-items:center;gap:8px;}
+.pstep.act{color:var(--accent);}
+.pstep.dn{color:var(--green);}
+.psdot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.psspin{width:7px;height:7px;border-radius:50%;border:2px solid var(--accent);border-top-color:transparent;flex-shrink:0;animation:spin .6s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* chart area */
+.chart-wrap{flex:1;position:relative;min-height:0;}
+.chart-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important;}
+
+/* ══════════════════════════════════════
+   S8: MULTILINGUAL COACHING
+══════════════════════════════════════ */
+#s8{flex-direction:row;}
+
+/* Left: control panel */
+.multi-ctrl{width:260px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:18px;gap:14px;overflow-y:auto;}
+
+/* Language selector */
+.lang-grid{display:flex;flex-direction:column;gap:5px;}
+.lang-btn{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:4px;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:all .2s;}
+.lang-btn:hover{border-color:#a855f7;background:rgba(168,85,247,.06);}
+.lang-btn.active{border-color:#a855f7;background:rgba(168,85,247,.12);box-shadow:0 0 0 1px rgba(168,85,247,.3);}
+.lang-flag{font-size:20px;flex-shrink:0;line-height:1;}
+.lang-info{flex:1;}
+.lang-name{font-family:var(--head);font-size:13px;font-weight:700;color:#fff;}
+.lang-native{font-family:var(--mono);font-size:9px;color:var(--dim);}
+.lang-status{font-family:var(--mono);font-size:8px;padding:2px 5px;border-radius:2px;}
+.lang-status.on{background:rgba(0,230,118,.12);color:var(--green);border:1px solid rgba(0,230,118,.2);}
+.lang-status.off{background:rgba(74,96,128,.12);color:var(--dim);border:1px solid var(--border);}
+
+/* Trigger buttons */
+.trigger-list{display:flex;flex-direction:column;gap:5px;}
+.trigger-btn{padding:8px 10px;border-radius:4px;border:1px solid var(--border);background:var(--surface);cursor:pointer;text-align:left;transition:all .2s;}
+.trigger-btn:hover{border-color:var(--accent);background:rgba(245,166,35,.06);}
+.trigger-btn.fired{border-color:var(--red);background:rgba(255,61,61,.08);animation:flash .8s 2;}
+.tb-icon{font-size:14px;margin-right:6px;}
+.tb-text{font-family:var(--mono);font-size:10px;color:var(--text);}
+.tb-sub{font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:2px;}
+
+/* LLM stats strip */
+.llm-strip{background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:4px;padding:10px;}
+.llm-strip-title{font-family:var(--mono);font-size:9px;color:#a855f7;letter-spacing:1px;margin-bottom:6px;}
+.llm-stat-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;padding:2px 0;}
+.llm-stat-row .k{color:var(--dim);}
+.llm-stat-row .v{color:#c084fc;}
+
+/* CENTER: translation hub */
+.multi-hub{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
+.hub-trigger-area{height:90px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:20px;}
+.source-msg{flex:1;}
+.source-label{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:1px;margin-bottom:4px;}
+.source-text{font-family:var(--head);font-size:18px;font-weight:700;color:#fff;line-height:1.2;}
+.source-sub{font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:3px;}
+.arrow-flow{font-size:28px;color:rgba(168,85,247,.5);flex-shrink:0;animation:arrowPulse 1s infinite;}
+@keyframes arrowPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+.llm-badge{flex-shrink:0;background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.4);border-radius:6px;padding:8px 14px;text-align:center;}
+.llm-badge-title{font-family:var(--mono);font-size:9px;color:#a855f7;letter-spacing:1px;}
+.llm-badge-model{font-family:var(--head);font-size:15px;font-weight:900;color:#c084fc;}
+.llm-badge-lat{font-family:var(--mono);font-size:9px;color:var(--green);}
+
+/* Translation cards grid */
+.trans-grid{flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:1px;background:var(--border);overflow:hidden;}
+.trans-card{background:var(--bg);padding:16px;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;}
+.trans-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.trans-card.vn::before{background:linear-gradient(90deg,#da251d,#0033a0);}
+.trans-card.id::before{background:linear-gradient(90deg,#ce1126,#fff);}
+.trans-card.ph::before{background:linear-gradient(90deg,#0038a8,#ce1126,#fcd116);}
+.trans-card.th::before{background:linear-gradient(90deg,#a51931,#fff,#2d2a4a);}
+.trans-card.zh::before{background:linear-gradient(90deg,#de2910,#ffde00);}
+.trans-card.en::before{background:linear-gradient(90deg,#012169,#c8102e);}
+.tc-header{display:flex;align-items:center;gap:8px;}
+.tc-flag{font-size:22px;line-height:1;}
+.tc-lang{font-family:var(--head);font-size:14px;font-weight:700;color:#fff;}
+.tc-latency{font-family:var(--mono);font-size:9px;margin-left:auto;padding:1px 6px;border-radius:2px;}
+.tc-latency.fast{background:rgba(0,230,118,.12);color:var(--green);border:1px solid rgba(0,230,118,.2);}
+.tc-latency.med{background:rgba(245,166,35,.12);color:var(--accent);border:1px solid rgba(245,166,35,.2);}
+.tc-msg{font-family:var(--mono);font-size:12px;color:var(--text);line-height:1.6;flex:1;min-height:40px;}
+.tc-msg.typing::after{content:'▌';animation:blink .5s infinite;color:#a855f7;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.tc-audio{display:flex;align-items:center;gap:6px;margin-top:auto;}
+.tc-audio-icon{font-size:12px;}
+.tc-wave{flex:1;height:18px;position:relative;overflow:hidden;}
+.tc-wave canvas{width:100%;height:100%;}
+.tc-tts{font-family:var(--mono);font-size:8px;color:var(--dim);}
+.tc-urgency{font-family:var(--mono);font-size:8px;padding:2px 6px;border-radius:2px;border:1px solid;align-self:flex-start;}
+.tc-urgency.warn{color:var(--red);border-color:rgba(255,61,61,.4);background:rgba(255,61,61,.06);}
+.tc-urgency.tip{color:#00e5ff;border-color:rgba(0,229,255,.3);background:rgba(0,229,255,.05);}
+.tc-urgency.ok{color:var(--green);border-color:rgba(0,230,118,.3);background:rgba(0,230,118,.05);}
+
+/* Right: worker device mockup */
+.worker-device{width:240px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;padding:16px;gap:10px;}
+.device-frame{background:#000;border:3px solid #2a3a4a;border-radius:16px;padding:16px;flex:1;display:flex;flex-direction:column;gap:10px;position:relative;}
+.device-notch{width:60px;height:8px;background:#1a2a3a;border-radius:4px;margin:0 auto;}
+.device-screen-title{font-family:var(--mono);font-size:9px;color:#00e5ff;text-align:center;letter-spacing:1px;}
+.device-worker-name{font-family:var(--head);font-size:20px;font-weight:900;color:#fff;text-align:center;}
+.device-flag{font-size:32px;text-align:center;}
+.device-msg-area{flex:1;background:#0a1520;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:6px;}
+.device-urgency{font-family:var(--mono);font-size:8px;text-align:center;padding:3px;border-radius:3px;background:rgba(255,61,61,.15);color:var(--red);border:1px solid rgba(255,61,61,.3);animation:flash .8s infinite;}
+.device-main-msg{font-family:var(--mono);font-size:12px;color:#fff;line-height:1.6;text-align:center;flex:1;display:flex;align-items:center;justify-content:center;}
+.device-phonetic{font-family:var(--mono);font-size:9px;color:var(--dim);text-align:center;}
+.device-waveform{height:32px;background:#060e18;border-radius:4px;display:flex;align-items:center;justify-content:center;gap:2px;overflow:hidden;}
+.wbar{width:3px;background:#a855f7;border-radius:2px;animation:wavebar var(--d,.5s) ease-in-out infinite alternate;}
+@keyframes wavebar{from{height:4px}to{height:var(--h,20px)}}
+.device-home-btn{width:40px;height:5px;background:#2a3a4a;border-radius:3px;margin:0 auto;}
+.device-side-label{font-family:var(--mono);font-size:9px;color:var(--dim);text-align:center;}
+
+/* Active language selector highlight */
+.lang-btn.active .lang-status{background:rgba(0,230,118,.15);color:var(--green);border-color:rgba(0,230,118,.3);}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ── HEADER ── -->
+<header>
+  <div>
+    <span class="logo">WELD<span>AI</span></span>
+    <span class="badge">PLATFORM v2.0</span>
+  </div>
+  <div class="status-bar">
+    <span><span class="dot"></span>SYSTEM ONLINE</span>
+    <span>SESSION: #INV-2025-03</span>
+    <span id="clock">00:00:00</span>
+  </div>
+</header>
+
+<!-- ── MODE TABS ── -->
+<div class="mode-tabs">
+  <button class="mode-tab capture active" onclick="switchMode('capture')">
+    <span class="mode-icon">🤖</span>CAPTURE MODE
+    <span class="mode-sub">숙련공 기술 → AI 로봇 학습</span>
+  </button>
+  <button class="mode-tab train" onclick="switchMode('train')">
+    <span class="mode-icon">🎓</span>TRAIN MODE
+    <span class="mode-sub">AI 로봇 → 신입 실시간 코칭</span>
+  </button>
+</div>
+
+<!-- ── STEP NAV ── -->
+<div class="step-nav" id="step-nav">
+  <!-- injected by JS -->
+</div>
+
+<!-- ── SCREENS ── -->
+<div class="screens">
+
+  <!-- ═══ S1: UPLOAD ═══ -->
+  <div id="s1" class="screen active">
+    <span style="font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:1px;">샘플 영상 선택 또는 직접 업로드</span>
+    <div class="sample-grid">
+      <div class="sample-card" id="card1" onclick="selectSample(1)">
+        <div class="svw">
+          <video id="vid1" src="videos/sample1.mp4" muted loop preload="metadata" onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;"></video>
+          <div class="play-ov">▶</div>
+          <div class="vlab">▶ 38.4s · 1080p · 60fps</div>
+        </div>
+        <div class="sinfo">
+          <div class="sname">Arc Welding — Steel Frame</div>
+          <div class="smeta">숙련공 12년 경력 · 자동차 섀시 MIG 용접</div>
+          <div class="stags"><span class="stag b">MIG</span><span class="stag o">High Spark</span><span class="stag g">6-axis</span></div>
+        </div>
+        <div class="selbadge">✓ SELECTED</div>
+      </div>
+      <div class="sample-card" id="card2" onclick="selectSample(2)">
+        <div class="svw">
+          <video id="vid2" src="videos/sample2.mp4" muted loop preload="metadata" onmouseover="this.play()" onmouseout="this.pause();this.currentTime=0;"></video>
+          <div class="play-ov">▶</div>
+          <div class="vlab">▶ 52.1s · 1080p · 30fps</div>
+        </div>
+        <div class="sinfo">
+          <div class="sname">TIG Welding — Pipe Joint</div>
+          <div class="smeta">숙련공 8년 경력 · 배관 접합 TIG 용접</div>
+          <div class="stags"><span class="stag b">TIG</span><span class="stag o">Precision</span><span class="stag g">Circular</span></div>
+        </div>
+        <div class="selbadge">✓ SELECTED</div>
+      </div>
+    </div>
+    <div class="or-row"><div class="or-line"></div><div class="or-text">또는 직접 업로드</div><div class="or-line"></div></div>
+    <div class="upload-zone" onclick="document.getElementById('fi').click()">
+      <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+      <div><div class="uzt1">내 영상 파일 업로드</div><div class="uzt2">MP4 · AVI · MOV 지원</div></div>
+      <input type="file" id="fi" accept="video/*" style="display:none" onchange="handleFile(this)">
+    </div>
+    <div class="svi" id="svi"><span style="color:var(--green)">✓</span><div class="svi-t">선택됨: <strong id="svi-name">—</strong></div></div>
+    <button class="analyze-btn" id="aBtn" onclick="startAnalysis()">▶ AI 분석 시작</button>
+  </div>
+
+  <!-- ═══ S2: MOTION ═══ -->
+  <div id="s2" class="screen">
+    <div class="panel-l">
+      <div>
+        <div class="slabel">Video Info</div>
+        <div class="drow"><span class="k">FILE</span><span class="v o" id="s2fn">sample1.mp4</span></div>
+        <div class="drow"><span class="k">DURATION</span><span class="v">38.4 sec</span></div>
+        <div class="drow"><span class="k">FRAMES</span><span class="v">2,304</span></div>
+        <div class="drow"><span class="k">FPS</span><span class="v g">60</span></div>
+      </div>
+      <div>
+        <div class="slabel">Extracted Params</div>
+        <div class="drow"><span class="k">TORCH ANGLE</span><span class="v o" id="ta">45°</span></div>
+        <div class="drow"><span class="k">AVG SPEED</span><span class="v">12.3 mm/s</span></div>
+        <div class="drow"><span class="k">PATH LENGTH</span><span class="v">284 mm</span></div>
+        <div class="drow"><span class="k">CONFIDENCE</span><span class="v g" id="conf">94.7%</span></div>
+      </div>
+      <div>
+        <div class="slabel">Patterns</div>
+        <span class="tbadge b">Steady Push</span>
+        <span class="tbadge c">Angle Weave</span>
+        <span class="tbadge g">Controlled Arc</span>
+      </div>
+    </div>
+    <div class="panel-m"><canvas id="motion-canvas" width="520" height="400" style="border:1px solid var(--border);border-radius:6px;background:#060c16;"></canvas></div>
+    <div class="panel-r">
+      <div class="slabel">Joint Data</div>
+      <div class="drow"><span class="k">J1</span><span class="v" id="j1">+23.4°</span></div>
+      <div class="drow"><span class="k">J2</span><span class="v" id="j2">-41.2°</span></div>
+      <div class="drow"><span class="k">J3</span><span class="v" id="j3">+67.8°</span></div>
+      <div class="drow"><span class="k">J4</span><span class="v" id="j4">-12.5°</span></div>
+      <div class="drow"><span class="k">J5</span><span class="v" id="j5">+88.1°</span></div>
+      <div class="drow"><span class="k">J6</span><span class="v" id="j6">+5.9°</span></div>
+      <div style="margin-top:10px">
+        <div class="slabel">Velocity</div>
+        <div class="drow"><span class="k">Vx</span><span class="v o" id="vx">7.2</span></div>
+        <div class="drow"><span class="k">Vy</span><span class="v o" id="vy">9.1</span></div>
+        <div class="drow"><span class="k">|V|</span><span class="v g" id="vm">11.9</span></div>
+      </div>
+      <div style="margin-top:auto;padding:8px;background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.2);border-radius:4px;">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:3px;">▶ STATUS</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--green);">Motion Pattern<br>Extracted ✓</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S3: LEARNING ═══ -->
+  <div id="s3" class="screen">
+    <div class="ltop">
+      <div class="cpanel"><div class="ctitle">Training Loss</div><div class="csub">Cross-entropy + Policy gradient</div><div class="carea"><canvas id="cl"></canvas></div></div>
+      <div class="cpanel"><div class="ctitle">Trajectory Error</div><div class="csub">Mean absolute deviation [mm]</div><div class="carea"><canvas id="ct"></canvas></div></div>
+      <div class="cpanel"><div class="ctitle">Constraint Violation</div><div class="csub">Joint limit / collision score</div><div class="carea"><canvas id="cc"></canvas></div></div>
+    </div>
+    <div class="lbot">
+      <div class="epdisplay"><div class="epbig" id="ep">1</div><div class="eplabel">/ 30 EPOCHS</div><div style="margin-top:6px;font-family:var(--mono);font-size:8px;color:var(--dim);">ETA: <span id="eta">2:14</span></div></div>
+      <div class="mgrid">
+        <div class="mitem"><div class="mval" id="me">18.3</div><div class="mlbl">TRAJ ERROR mm</div></div>
+        <div class="mitem"><div class="mval" id="mv">0.62</div><div class="mlbl">VEL INSTABILITY</div></div>
+        <div class="mitem"><div class="mval" id="ml">0.841</div><div class="mlbl">LOSS</div></div>
+        <div class="mitem"><div class="mval" id="ms">—</div><div class="mlbl">SIMILARITY</div></div>
+      </div>
+      <div class="logp" id="logp">
+        <div class="slabel">Log</div>
+        <div class="lline">> Initializing weights...</div>
+        <div class="lline" id="lcur"><span class="lcur"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S4: FAIL ═══ -->
+  <div id="s4" class="screen">
+    <div class="robot-vp">
+      <canvas id="rfc"></canvas>
+      <div class="alert-ban"><span style="font-size:16px">⚠</span><div><div style="font-weight:bold;margin-bottom:1px;">JOINT LIMIT EXCEEDED</div><div style="font-size:9px;color:#ff7070;">J3: +142.7° › Max: +130°</div></div></div>
+    </div>
+    <div class="fail-side">
+      <div class="slabel">Error Report</div>
+      <div class="eitem"><div class="etitle">⊗ JOINT_LIMIT_EXCEEDED</div><div class="edesc">J3: 142.7° (limit 130°)<br>Wrist singularity at t=1.8s</div></div>
+      <div class="eitem"><div class="etitle">⊗ PATH_COLLISION_RISK</div><div class="edesc">Clearance: 4.2mm (min 15mm)</div></div>
+      <div class="eitem"><div class="etitle">⊗ VELOCITY_OVERSHOOT</div><div class="edesc">Peak 1.84 m/s (limit 1.5 m/s)</div></div>
+      <div class="recalc">↺ Recalculating Path...<br><span style="font-size:8px;margin-top:3px;display:block;color:var(--dim);">Constraint-aware IK solver</span></div>
+      <div style="margin-top:auto">
+        <div class="slabel">Optimizer</div>
+        <div class="drow"><span class="k">ITER</span><span class="v" id="iki">0</span></div>
+        <div class="drow"><span class="k">RESIDUAL</span><span class="v" id="ikr">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ S5: SUCCESS ═══ -->
+  <div id="s5" class="screen">
+    <div class="succ-vp">
+      <canvas id="roc"></canvas>
+      <div class="succ-ban"><span>✓</span><div><div style="font-weight:bold;">CONVERGED: 97.8% SIMILARITY</div><div style="font-size:9px;color:#7fffa8;">All constraints satisfied · Ready for Deployment</div></div></div>
+    </div>
+    <div class="succ-side">
+      <div class="slabel">Performance Compare</div>
+      <div id="cmp"></div>
+      <div class="slabel" style="margin-top:6px">Key Results</div>
+      <div class="kgrid">
+        <div class="kcard"><div class="kval">97.8<span class="kunit">%</span></div><div class="klbl">SIMILARITY</div></div>
+        <div class="kcard"><div class="kval">0.4<span class="kunit">mm</span></div><div class="klbl">TRAJ ERROR</div></div>
+        <div class="kcard"><div class="kval">3.2<span class="kunit">×</span></div><div class="klbl">SPEED UP</div></div>
+        <div class="kcard"><div class="kval">12<span class="kunit">min</span></div><div class="klbl">TRAIN TIME</div></div>
+      </div>
+      <button class="deploy-btn">▶ DEPLOY TO ROBOT</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════
+       S6: LIVE COACHING (TRAIN MODE)
+  ═══════════════════════════════ -->
+  <div id="s6" class="screen">
+    <div class="coach-viewport">
+      <canvas id="coach-canvas"></canvas>
+
+      <!-- 실시간 오버레이 수치들 -->
+      <div style="position:absolute;top:14px;left:14px;font-family:var(--mono);font-size:10px;color:rgba(0,229,255,.7);">
+        ● LIVE COACHING SESSION
+      </div>
+      <div style="position:absolute;bottom:14px;left:14px;font-family:var(--mono);font-size:9px;color:var(--dim);">
+        BLUE: 로봇 기준 궤적 &nbsp;|&nbsp; YELLOW: 신입 실제 경로 &nbsp;|&nbsp; RED ZONE: 오차 초과
+      </div>
+    </div>
+
+    <div class="coach-feedback-panel">
+      <!-- Trainee info -->
+      <div class="trainee-strip">
+        <div class="trainee-avatar">👤</div>
+        <div class="trainee-info">
+          <div class="trainee-name">김민준 (입사 3개월)</div>
+          <div class="trainee-meta">오늘 세션 #12 · MIG 용접 기초</div>
+        </div>
+        <div class="session-badge">LIVE</div>
+      </div>
+
+      <!-- Score ring -->
+      <div class="score-hero">
+        <div class="score-label">SKILL SCORE</div>
+        <div class="score-ring">
+          <svg viewBox="0 0 100 100">
+            <circle class="ring-bg" cx="50" cy="50" r="45"/>
+            <circle class="ring-fill" id="ring-fill" cx="50" cy="50" r="45"/>
+          </svg>
+          <div class="score-num">
+            <div class="score-big" id="score-num">0</div>
+            <div class="score-unit">/ 100</div>
+          </div>
+        </div>
+        <div class="score-delta" id="score-delta">↑ +0 from last session</div>
+      </div>
+
+      <!-- AI Messages -->
+      <div class="ai-messages" id="ai-msgs">
+        <div class="slabel cyan">AI COACH</div>
+        <div class="ai-msg neutral"><div class="msg-time">00:00</div><span class="msg-icon">🤖</span>코칭 세션을 시작합니다...</div>
+      </div>
+
+      <!-- Live Metrics -->
+      <div class="live-metrics">
+        <div class="slabel cyan">REAL-TIME METRICS</div>
+        <div class="lm-grid">
+          <div class="lm-item">
+            <div class="lm-val" id="lm-angle" style="color:#00e5ff">—°</div>
+            <div class="lm-lbl">ANGLE ERROR</div>
+            <div class="lm-bar"><div class="lm-fill" id="lmb-angle" style="background:#00e5ff;width:0%"></div></div>
+          </div>
+          <div class="lm-item">
+            <div class="lm-val" id="lm-speed" style="color:var(--green)">—</div>
+            <div class="lm-lbl">SPEED RATIO</div>
+            <div class="lm-bar"><div class="lm-fill" id="lmb-speed" style="background:var(--green);width:0%"></div></div>
+          </div>
+          <div class="lm-item">
+            <div class="lm-val" id="lm-steady" style="color:var(--accent)">—%</div>
+            <div class="lm-lbl">STEADINESS</div>
+            <div class="lm-bar"><div class="lm-fill" id="lmb-steady" style="background:var(--accent);width:0%"></div></div>
+          </div>
+          <div class="lm-item">
+            <div class="lm-val" id="lm-err" style="color:var(--red)">—mm</div>
+            <div class="lm-lbl">PATH ERROR</div>
+            <div class="lm-bar"><div class="lm-fill" id="lmb-err" style="background:var(--red);width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════
+       S7: PROGRESS DASHBOARD (TRAIN MODE)
+  ═══════════════════════════════ -->
+  <div id="s7" class="screen">
+    <div class="dash-top">
+
+      <!-- LEFT: Level + Stats -->
+      <div class="dash-left">
+        <div class="slabel cyan">훈련생 프로필</div>
+        <div class="level-card">
+          <div class="level-title">CURRENT LEVEL</div>
+          <div class="level-badge">LV.2</div>
+          <div class="level-name">준숙련 용접사</div>
+          <div class="level-sub">초급 → 중급 진행 중</div>
+          <div class="cert-progress">
+            <div style="font-family:var(--mono);font-size:8px;color:var(--dim);margin-bottom:4px;display:flex;justify-content:space-between">
+              <span>LV.2 달성률</span><span style="color:#00e5ff">67%</span>
+            </div>
+            <div class="cert-bar-wrap"><div class="cert-bar-fill" id="cert-fill" style="width:0%"></div></div>
+            <div class="cert-labels"><span>LV.1</span><span>LV.3 중급</span></div>
+          </div>
+        </div>
+
+        <div class="slabel cyan">세션 통계</div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-val" style="color:#00e5ff">12</div><div class="stat-lbl">총 세션 수</div></div>
+          <div class="stat-card"><div class="stat-val" style="color:var(--green)">74</div><div class="stat-lbl">현재 점수</div></div>
+          <div class="stat-card"><div class="stat-val" style="color:var(--accent)">18h</div><div class="stat-lbl">누적 훈련</div></div>
+          <div class="stat-card"><div class="stat-val" style="color:var(--purple)">+31</div><div class="stat-lbl">점수 향상</div></div>
+        </div>
+
+        <div class="slabel cyan" style="margin-top:4px">기술별 숙련도</div>
+        <div class="skill-grid" id="skill-grid"></div>
+
+        <button class="certify-btn">🏆 WELDAI CERTIFY 발급</button>
+      </div>
+
+      <!-- CENTER: Growth chart -->
+      <div class="dash-main">
+        <div class="slabel cyan">점수 성장 곡선 (12 Sessions)</div>
+        <div class="chart-wrap" style="min-height:180px;max-height:220px;">
+          <canvas id="growth-chart"></canvas>
+        </div>
+
+        <div class="slabel cyan">세션별 상세 기록</div>
+        <div class="session-list" id="sess-list"></div>
+      </div>
+
+      <!-- RIGHT: Today's breakdown -->
+      <div class="dash-right">
+        <div class="slabel cyan">오늘 세션 분석</div>
+
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:12px;">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--dim);margin-bottom:8px;">오늘 vs 첫 세션 비교</div>
+          <div id="today-compare"></div>
+        </div>
+
+        <div class="slabel cyan">강점 / 개선 필요</div>
+        <div id="strengths"></div>
+
+        <div class="slabel cyan">다음 목표</div>
+        <div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);border-radius:4px;padding:12px;">
+          <div style="font-family:var(--mono);font-size:10px;color:#00e5ff;margin-bottom:6px;">🎯 LV.3 달성 조건</div>
+          <div id="next-goals"></div>
+        </div>
+
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:12px;">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--dim);margin-bottom:4px;">AI 코치 한마디</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text);line-height:1.6;">"속도 안정성이 지난주 대비 크게 향상됐습니다. 토치 각도만 집중하면 다음 세션에서 LV.3 달성 가능합니다."</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:4px;">— WeldAI Coach · 오늘 세션 종료 후</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════
+       S8: MULTILINGUAL COACHING (TRAIN MODE)
+  ═══════════════════════════════ -->
+  <div id="s8" class="screen">
+
+    <!-- LEFT: Controls -->
+    <div class="multi-ctrl">
+
+      <div class="slabel" style="color:#a855f7">WORKER LANGUAGE</div>
+      <div class="lang-grid" id="lang-grid">
+        <div class="lang-btn active" data-lang="vn" onclick="selectLang('vn')">
+          <div class="lang-flag">🇻🇳</div>
+          <div class="lang-info"><div class="lang-name">Vietnamese</div><div class="lang-native">Tiếng Việt</div></div>
+          <div class="lang-status on">ACTIVE</div>
+        </div>
+        <div class="lang-btn" data-lang="id" onclick="selectLang('id')">
+          <div class="lang-flag">🇮🇩</div>
+          <div class="lang-info"><div class="lang-name">Indonesian</div><div class="lang-native">Bahasa Indonesia</div></div>
+          <div class="lang-status off">SELECT</div>
+        </div>
+        <div class="lang-btn" data-lang="ph" onclick="selectLang('ph')">
+          <div class="lang-flag">🇵🇭</div>
+          <div class="lang-info"><div class="lang-name">Filipino</div><div class="lang-native">Tagalog</div></div>
+          <div class="lang-status off">SELECT</div>
+        </div>
+        <div class="lang-btn" data-lang="th" onclick="selectLang('th')">
+          <div class="lang-flag">🇹🇭</div>
+          <div class="lang-info"><div class="lang-name">Thai</div><div class="lang-native">ภาษาไทย</div></div>
+          <div class="lang-status off">SELECT</div>
+        </div>
+        <div class="lang-btn" data-lang="zh" onclick="selectLang('zh')">
+          <div class="lang-flag">🇨🇳</div>
+          <div class="lang-info"><div class="lang-name">Chinese</div><div class="lang-native">普通话</div></div>
+          <div class="lang-status off">SELECT</div>
+        </div>
+        <div class="lang-btn" data-lang="en" onclick="selectLang('en')">
+          <div class="lang-flag">🇺🇸</div>
+          <div class="lang-info"><div class="lang-name">English</div><div class="lang-native">English</div></div>
+          <div class="lang-status off">SELECT</div>
+        </div>
+      </div>
+
+      <div class="slabel" style="color:#a855f7;margin-top:4px">TRIGGER SCENARIO</div>
+      <div class="trigger-list" id="trigger-list">
+        <div class="trigger-btn" onclick="fireScenario(0)">
+          <div><span class="tb-icon">⚠</span><span class="tb-text">토치 각도 오류</span></div>
+          <div class="tb-sub">Torch angle exceeds ±5°</div>
+        </div>
+        <div class="trigger-btn" onclick="fireScenario(1)">
+          <div><span class="tb-icon">💡</span><span class="tb-text">속도 조절 안내</span></div>
+          <div class="tb-sub">Speed deviation detected</div>
+        </div>
+        <div class="trigger-btn" onclick="fireScenario(2)">
+          <div><span class="tb-icon">🚨</span><span class="tb-text">안전 경고 (긴급)</span></div>
+          <div class="tb-sub">Safety proximity alert</div>
+        </div>
+        <div class="trigger-btn" onclick="fireScenario(3)">
+          <div><span class="tb-icon">✓</span><span class="tb-text">잘했어요! 칭찬</span></div>
+          <div class="tb-sub">Excellent performance</div>
+        </div>
+      </div>
+
+      <div class="llm-strip">
+        <div class="llm-strip-title">▶ LLM ENGINE</div>
+        <div class="llm-stat-row"><span class="k">MODEL</span><span class="v" id="llm-model">Claude 3.5</span></div>
+        <div class="llm-stat-row"><span class="k">LATENCY</span><span class="v" id="llm-lat">—</span></div>
+        <div class="llm-stat-row"><span class="k">TOKENS</span><span class="v" id="llm-tok">—</span></div>
+        <div class="llm-stat-row"><span class="k">LANGUAGES</span><span class="v" id="llm-langs">6</span></div>
+        <div class="llm-stat-row"><span class="k">TRANSLATED</span><span class="v" id="llm-count">0</span></div>
+      </div>
+
+    </div>
+
+    <!-- CENTER: Translation Hub -->
+    <div class="multi-hub">
+
+      <!-- Source message display -->
+      <div class="hub-trigger-area">
+        <div class="source-msg">
+          <div class="source-label">🇰🇷 AI COACH → 한국어 원문</div>
+          <div class="source-text" id="src-text">시나리오를 선택하세요</div>
+          <div class="source-sub" id="src-sub">Left panel에서 상황을 선택하면 즉시 번역됩니다</div>
+        </div>
+        <div class="arrow-flow">⟶</div>
+        <div class="llm-badge">
+          <div class="llm-badge-title">AI TRANSLATOR</div>
+          <div class="llm-badge-model">LLM</div>
+          <div class="llm-badge-lat" id="badge-lat">Ready</div>
+        </div>
+      </div>
+
+      <!-- 6-language translation grid -->
+      <div class="trans-grid">
+        <div class="trans-card vn" id="tc-vn">
+          <div class="tc-header"><span class="tc-flag">🇻🇳</span><span class="tc-lang">Tiếng Việt</span><span class="tc-latency fast" id="lat-vn">—</span></div>
+          <div class="tc-urgency tip" id="urg-vn">READY</div>
+          <div class="tc-msg" id="msg-vn">시나리오를 선택하면 번역이 표시됩니다</div>
+          <div class="tc-audio"><span class="tc-audio-icon" style="cursor:pointer" onclick="replaySpeech('vn')" title="클릭하여 재생">🔊</span><div class="tc-wave"><canvas id="wave-vn"></canvas></div><span class="tc-tts">TTS</span></div>
+        </div>
+        <div class="trans-card id" id="tc-id">
+          <div class="tc-header"><span class="tc-flag">🇮🇩</span><span class="tc-lang">Bahasa Indonesia</span><span class="tc-latency fast" id="lat-id">—</span></div>
+          <div class="tc-urgency tip" id="urg-id">READY</div>
+          <div class="tc-msg" id="msg-id">시나리오를 선택하면 번역이 표시됩니다</div>
+          <div class="tc-audio"><span class="tc-audio-icon" style="cursor:pointer" onclick="replaySpeech('id')" title="클릭하여 재생">🔊</span><div class="tc-wave"><canvas id="wave-id"></canvas></div><span class="tc-tts">TTS</span></div>
+        </div>
+        <div class="trans-card ph" id="tc-ph">
+          <div class="tc-header"><span class="tc-flag">🇵🇭</span><span class="tc-lang">Tagalog</span><span class="tc-latency med" id="lat-ph">—</span></div>
+          <div class="tc-urgency tip" id="urg-ph">READY</div>
+          <div class="tc-msg" id="msg-ph">시나리오를 선택하면 번역이 표시됩니다</div>
+          <div class="tc-audio"><span class="tc-audio-icon" style="cursor:pointer" onclick="replaySpeech('ph')" title="클릭하여 재생">🔊</span><div class="tc-wave"><canvas id="wave-ph"></canvas></div><span class="tc-tts">TTS</span></div>
+        </div>
+        <div class="trans-card th" id="tc-th">
+          <div class="tc-header"><span class="tc-flag">🇹🇭</span><span class="tc-lang">ภาษาไทย</span><span class="tc-latency fast" id="lat-th">—</span></div>
+          <div class="tc-urgency tip" id="urg-th">READY</div>
+          <div class="tc-msg" id="msg-th">시나리오를 선택하면 번역이 표시됩니다</div>
+          <div class="tc-audio"><span class="tc-audio-icon" style="cursor:pointer" onclick="replaySpeech('th')" title="클릭하여 재생">🔊</span><div class="tc-wave"><canvas id="wave-th"></canvas></div><span class="tc-tts">TTS</span></div>
+        </div>
+        <div class="trans-card zh" id="tc-zh">
+          <div class="tc-header"><span class="tc-flag">🇨🇳</span><span class="tc-lang">普通话</span><span class="tc-latency fast" id="lat-zh">—</span></div>
+          <div class="tc-urgency tip" id="urg-zh">READY</div>
+          <div class="tc-msg" id="msg-zh">시나리오를 선택하면 번역이 표시됩니다</div>
+          <div class="tc-audio"><span class="tc-audio-icon" style="cursor:pointer" onclick="replaySpeech('zh')" title="클릭하여 재생">🔊</span><div class="tc-wave"><canvas id="wave-zh"></canvas></div><span class="tc-tts">TTS</span></div>
+        </div>
+        <div class="trans-card en" id="tc-en">
+          <div class="tc-header"><span class="tc-flag">🇺🇸</span><span class="tc-lang">English</span><span class="tc-latency fast" id="lat-en">—</span></div>
+          <div class="tc-urgency tip" id="urg-en">READY</div>
+          <div class="tc-msg" id="msg-en">Select a scenario to see translations</div>
+          <div class="tc-audio"><span class="tc-audio-icon" style="cursor:pointer" onclick="replaySpeech('en')" title="클릭하여 재생">🔊</span><div class="tc-wave"><canvas id="wave-en"></canvas></div><span class="tc-tts">TTS</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Worker Device -->
+    <div class="worker-device">
+      <div class="slabel" style="color:#a855f7">WORKER DEVICE</div>
+
+      <div class="device-frame">
+        <div class="device-notch"></div>
+        <div class="device-screen-title">WELDAI COACH</div>
+        <div class="device-flag" id="dev-flag">🇻🇳</div>
+        <div class="device-worker-name" id="dev-name">Nguyen Van A</div>
+        <div class="device-msg-area">
+          <div class="device-urgency" id="dev-urgency">⚠ 대기 중</div>
+          <div class="device-main-msg" id="dev-msg">코치 메시지를<br>기다리는 중...</div>
+          <div class="device-phonetic" id="dev-phonetic"></div>
+        </div>
+        <div class="device-waveform" id="dev-wave">
+          <div class="wbar" style="--h:8px;--d:.4s"></div>
+          <div class="wbar" style="--h:6px;--d:.5s"></div>
+          <div class="wbar" style="--h:10px;--d:.35s"></div>
+          <div class="wbar" style="--h:7px;--d:.55s"></div>
+          <div class="wbar" style="--h:12px;--d:.45s"></div>
+          <div class="wbar" style="--h:8px;--d:.38s"></div>
+          <div class="wbar" style="--h:9px;--d:.6s"></div>
+          <div class="wbar" style="--h:6px;--d:.42s"></div>
+        </div>
+        <div class="device-home-btn"></div>
+      </div>
+
+      <div class="device-side-label">실시간 음성+텍스트 전달</div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:10px;margin-top:auto;">
+        <div style="font-family:var(--mono);font-size:8px;color:var(--dim);margin-bottom:6px;">번역 완료 카운터</div>
+        <div style="font-family:var(--head);font-size:36px;font-weight:900;color:#a855f7;line-height:1;" id="trans-counter">0</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:2px;">messages today</div>
+      </div>
+
+      <div style="background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.2);border-radius:4px;padding:10px;">
+        <div style="font-family:var(--mono);font-size:8px;color:var(--green);margin-bottom:4px;">평균 응답 시간</div>
+        <div style="font-family:var(--head);font-size:22px;font-weight:900;color:var(--green);" id="avg-lat">—</div>
+        <div style="font-family:var(--mono);font-size:8px;color:var(--dim);">ms (6 languages)</div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /screens -->
+
+<!-- FOOTER -->
+<footer>
+  <button class="nav-btn prev" onclick="prevStep()">← PREV</button>
+  <div class="footer-info" id="finfo">Screen 1 / 5</div>
+  <button class="nav-btn cap-next" id="nextBtn" onclick="nextStep()">NEXT →</button>
+</footer>
+
+</div><!-- /app -->
+
+<!-- PROGRESS OVERLAY -->
+<div class="prog-ov" id="pov">
+  <div class="prog-ov-title" id="pot">AI 분석 중...</div>
+  <div class="prog-ov-sub" id="pos">영상에서 용접 동작을 추출하고 있습니다</div>
+  <div class="prog-bw">
+    <div class="prog-lr"><span id="psl">Initializing...</span><span id="ppl">0%</span></div>
+    <div class="prog-b"><div class="prog-f" id="pf"></div></div>
+  </div>
+  <div class="prog-steps">
+    <div class="pstep" id="ps1"><span class="psdot"></span>영상 디코딩 및 프레임 추출</div>
+    <div class="pstep" id="ps2"><span class="psdot"></span>OpenCV 모션 분석</div>
+    <div class="pstep" id="ps3"><span class="psdot"></span>6축 관절 궤적 계산</div>
+    <div class="pstep" id="ps4"><span class="psdot"></span>속도 벡터 및 각도 추출</div>
+    <div class="pstep" id="ps5"><span class="psdot"></span>AI 학습 데이터 준비 완료</div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let mode = 'capture'; // 'capture' | 'train'
+let step = 1;
+let selectedSample = null;
+let animH = {};
+
+const captureSteps = [
+  {id:1, label:'VIDEO UPLOAD'},
+  {id:2, label:'MOTION EXTRACT'},
+  {id:3, label:'AI TRAINING'},
+  {id:4, label:'FIRST ATTEMPT'},
+  {id:5, label:'OPTIMIZED RESULT'},
+];
+const trainSteps = [
+  {id:6, label:'LIVE COACHING'},
+  {id:7, label:'PROGRESS REPORT'},
+  {id:8, label:'MULTILINGUAL AI'},
+];
+
+function getSteps(){ return mode==='capture' ? captureSteps : trainSteps; }
+function getFirstStep(){ return mode==='capture' ? 1 : 6; }
+
+// ═══════════════════════════════════════════════
+// CLOCK
+// ═══════════════════════════════════════════════
+setInterval(()=>{document.getElementById('clock').textContent=new Date().toTimeString().split(' ')[0];},1000);
+
+// ═══════════════════════════════════════════════
+// MODE SWITCH
+// ═══════════════════════════════════════════════
+function switchMode(m) {
+  cancelAllAnims();
+  mode = m;
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.mode-tab.'+m).classList.add('active');
+  const nb = document.getElementById('nextBtn');
+  nb.className = 'nav-btn '+(m==='capture'?'cap-next':'tr-next');
+  renderStepNav();
+  goTo(getFirstStep());
+}
+
+// ═══════════════════════════════════════════════
+// STEP NAV RENDER
+// ═══════════════════════════════════════════════
+function renderStepNav() {
+  const nav = document.getElementById('step-nav');
+  const steps = getSteps();
+  nav.innerHTML = steps.map(s=>`
+    <button class="step-btn" data-step="${s.id}" onclick="goTo(${s.id})">
+      <span class="snum">STEP ${String(steps.indexOf(s)+1).padStart(2,'0')}</span>${s.label}
+    </button>`).join('');
+}
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function goTo(n) {
+  cancelAllAnims();
+  document.getElementById('s'+step).classList.remove('active');
+  step = n;
+  document.getElementById('s'+n).classList.add('active');
+  const steps = getSteps();
+  document.querySelectorAll('.step-btn').forEach(b=>{
+    b.classList.remove('active','done');
+    const bs = +b.dataset.step;
+    if(bs === n) b.classList.add('active', mode==='capture'?'cap':'tr');
+    else if(steps.find(s=>s.id===bs) && bs < n) b.classList.add('done');
+  });
+  const idx = steps.findIndex(s=>s.id===n);
+  document.getElementById('finfo').textContent = `Screen ${idx+1} / ${steps.length}`;
+  setTimeout(()=>initScreen(n), 60);
+}
+function nextStep() {
+  const steps = getSteps();
+  const cur = steps.findIndex(s=>s.id===step);
+  if(cur < steps.length-1) goTo(steps[cur+1].id);
+}
+function prevStep() {
+  const steps = getSteps();
+  const cur = steps.findIndex(s=>s.id===step);
+  if(cur > 0) goTo(steps[cur-1].id);
+}
+function cancelAllAnims() {
+  Object.values(animH).forEach(h=>{clearTimeout(h);clearInterval(h);cancelAnimationFrame(h);});
+  animH = {};
+}
+
+// ═══════════════════════════════════════════════
+// INIT SCREENS
+// ═══════════════════════════════════════════════
+function initScreen(n) {
+  if(n===2) initMotion();
+  if(n===3) initLearning();
+  if(n===4) initFail();
+  if(n===5) initSuccess();
+  if(n===6) initCoaching();
+  if(n===7) initDashboard();
+  if(n===8) initMultilingual();
+}
+
+// ═══════════════════════════════════════════════
+// S1 Upload
+// ═══════════════════════════════════════════════
+function selectSample(n) {
+  selectedSample = n;
+  document.getElementById('card1').classList.toggle('selected',n===1);
+  document.getElementById('card2').classList.toggle('selected',n===2);
+  document.getElementById('svi').classList.add('show');
+  document.getElementById('svi-name').textContent = n===1?'Arc Welding — Steel Frame':'TIG Welding — Pipe Joint';
+  document.getElementById('aBtn').classList.add('ready');
+}
+function handleFile(inp) {
+  if(!inp.files.length) return;
+  selectedSample = 0;
+  document.getElementById('card1').classList.remove('selected');
+  document.getElementById('card2').classList.remove('selected');
+  document.getElementById('svi').classList.add('show');
+  document.getElementById('svi-name').textContent = inp.files[0].name;
+  document.getElementById('aBtn').classList.add('ready');
+}
+function startAnalysis() {
+  const ov = document.getElementById('pov');
+  ov.classList.add('show');
+  const pf = document.getElementById('pf');
+  const ppl = document.getElementById('ppl');
+  const psl = document.getElementById('psl');
+  const phases = [
+    {id:'ps1',pct:20,msg:'Decoding frames...'},
+    {id:'ps2',pct:45,msg:'Running optical flow...'},
+    {id:'ps3',pct:65,msg:'Computing IK trajectories...'},
+    {id:'ps4',pct:85,msg:'Extracting velocity vectors...'},
+    {id:'ps5',pct:100,msg:'Complete!'},
+  ];
+  let i=0;
+  function run(){
+    if(i>0){const prev=document.getElementById(phases[i-1].id);prev.innerHTML=prev.innerHTML.replace('psspin','psdot');prev.classList.remove('act');prev.classList.add('dn');}
+    if(i>=phases.length){setTimeout(()=>{ov.classList.remove('show');document.getElementById('s2fn').textContent=selectedSample===1?'sample1.mp4':selectedSample===2?'sample2.mp4':'custom.mp4';goTo(2);},400);return;}
+    const s=phases[i]; const el=document.getElementById(s.id);
+    el.classList.add('act'); el.innerHTML=el.innerHTML.replace('psdot','psspin');
+    pf.style.width=s.pct+'%'; ppl.textContent=s.pct+'%'; psl.textContent=s.msg; i++;
+    setTimeout(run, s.pct<50?900:700);
+  }
+  setTimeout(run,200);
+}
+
+// ═══════════════════════════════════════════════
+// S2 Motion canvas
+// ═══════════════════════════════════════════════
+function initMotion(){
+  const canvas=document.getElementById('motion-canvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  const pts=[];
+  for(let i=0;i<=200;i++) pts.push({x:60+(i/200)*(W-120),y:H/2+Math.sin(i/200*Math.PI*3)*75+Math.sin(i/200*Math.PI*7)*18});
+  let drawn=0,t=0;
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='rgba(26,42,64,.5)';ctx.lineWidth=1;
+    for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    if(drawn>1){
+      ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+      for(let i=1;i<drawn;i++)ctx.lineTo(pts[i].x,pts[i].y);
+      ctx.strokeStyle='rgba(30,144,255,.8)';ctx.lineWidth=2.5;ctx.stroke();
+    }
+    for(let i=5;i<drawn;i+=14){
+      const p=pts[i],pn=pts[Math.min(i+5,drawn-1)];
+      const dx=(pn.x-p.x)*3,dy=(pn.y-p.y)*3,ang=Math.atan2(dy,dx);
+      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x+dx,p.y+dy);
+      ctx.strokeStyle='rgba(245,166,35,.5)';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(p.x+dx,p.y+dy);
+      ctx.lineTo(p.x+dx-7*Math.cos(ang-.4),p.y+dy-7*Math.sin(ang-.4));
+      ctx.lineTo(p.x+dx-7*Math.cos(ang+.4),p.y+dy-7*Math.sin(ang+.4));
+      ctx.closePath();ctx.fillStyle='rgba(245,166,35,.5)';ctx.fill();
+    }
+    if(drawn<pts.length){
+      const p=pts[drawn];
+      ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+      ctx.strokeStyle='var(--accent)';ctx.lineWidth=2;ctx.stroke();
+      const ang=(-45+Math.sin(drawn/30)*10)*Math.PI/180;
+      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x+Math.cos(ang)*28,p.y+Math.sin(ang)*28);
+      ctx.strokeStyle='rgba(255,107,53,.9)';ctx.lineWidth=2;ctx.stroke();
+    }
+    ctx.font='10px Share Tech Mono';
+    ctx.fillStyle='rgba(30,144,255,.8)';ctx.fillText('TRAJECTORY',18,18);
+    ctx.fillStyle='rgba(245,166,35,.8)';ctx.fillText('VELOCITY VEC',18,32);
+    if(drawn<pts.length)drawn+=3;
+    const p=drawn/pts.length;
+    document.getElementById('ta').textContent=(42+Math.sin(p*10)*8).toFixed(1)+'°';
+    document.getElementById('conf').textContent=(88+p*7).toFixed(1)+'%';
+    document.getElementById('j1').textContent='+'+(23+Math.sin(t*.1)*3).toFixed(1)+'°';
+    document.getElementById('j3').textContent=(67+Math.sin(t*.08)*5).toFixed(1)+'°';
+    document.getElementById('vx').textContent=(7.2+Math.sin(t*.12)*1.2).toFixed(1);
+    document.getElementById('vy').textContent=(9.1+Math.cos(t*.1)*.8).toFixed(1);
+    document.getElementById('vm').textContent=(11.9+Math.sin(t*.09)*.5).toFixed(1);
+    t++;
+    animH.m=requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+// ═══════════════════════════════════════════════
+// S3 Learning charts
+// ═══════════════════════════════════════════════
+function initLearning(){
+  const E=30;let ep=0;
+  const ld=[],td=[],cd=[];
+  for(let i=0;i<=E;i++){const p=i/E;ld.push(.85*Math.exp(-3.5*p)+.04+(Math.random()-.5)*.02);td.push(18.3*Math.exp(-4.2*p)+.4+(Math.random()-.5)*.3);cd.push(.62*Math.exp(-3.8*p)+.01+(Math.random()-.5)*.015);}
+  const charts=[{id:'cl',data:ld,color:'#1e90ff',min:0,max:.9},{id:'ct',data:td,color:'#f5a623',min:0,max:20},{id:'cc',data:cd,color:'#ff6b35',min:0,max:.65}];
+  function dc(ch,up){
+    const el=document.getElementById(ch.id);const par=el.parentElement;
+    el.width=par.offsetWidth;el.height=par.offsetHeight;
+    const ctx=el.getContext('2d');const W=el.width,H=el.height,pd={l:30,r:8,t:8,b:18};
+    const cw=W-pd.l-pd.r,ch2=H-pd.t-pd.b;
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='rgba(26,42,64,.6)';ctx.lineWidth=1;
+    for(let i=0;i<=4;i++){const y=pd.t+(i/4)*ch2;ctx.beginPath();ctx.moveTo(pd.l,y);ctx.lineTo(pd.l+cw,y);ctx.stroke();const v=ch.max-(i/4)*(ch.max-ch.min);ctx.fillStyle='rgba(74,96,128,.7)';ctx.font='8px Share Tech Mono';ctx.textAlign='right';ctx.fillText(v.toFixed(v<1?2:0),pd.l-3,y+3);}
+    if(up<2)return;
+    const gr=ctx.createLinearGradient(0,pd.t,0,pd.t+ch2);gr.addColorStop(0,ch.color+'40');gr.addColorStop(1,ch.color+'00');
+    ctx.beginPath();for(let i=0;i<up;i++){const x=pd.l+(i/E)*cw,y=pd.t+ch2-(ch.data[i]-ch.min)/(ch.max-ch.min)*ch2;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}
+    const lx=pd.l+((up-1)/E)*cw;ctx.lineTo(lx,pd.t+ch2);ctx.lineTo(pd.l,pd.t+ch2);ctx.closePath();ctx.fillStyle=gr;ctx.fill();
+    ctx.beginPath();for(let i=0;i<up;i++){const x=pd.l+(i/E)*cw,y=pd.t+ch2-(ch.data[i]-ch.min)/(ch.max-ch.min)*ch2;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}
+    ctx.strokeStyle=ch.color;ctx.lineWidth=2;ctx.stroke();
+    const cx2=pd.l+((up-1)/E)*cw,cy=pd.t+ch2-(ch.data[up-1]-ch.min)/(ch.max-ch.min)*ch2;
+    ctx.beginPath();ctx.arc(cx2,cy,3,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle=ch.color;ctx.lineWidth=2;ctx.stroke();
+  }
+  const logs=['Epoch 1: Initializing rollout...','Epoch 2: Policy gradient step','Epoch 4: Constraint penalty [J3]','Epoch 6: Loss 0.741 ↓','Epoch 12: Traj error 8.2mm ↓','Epoch 15: Joint limits satisfied ✓','Epoch 22: Path deviation < 1mm','Epoch 30: CONVERGED ✓ 97.8%'];
+  let li=0;const logp=document.getElementById('logp');
+  function addLog(m){const d=document.createElement('div');d.className='lline'+(m.includes('✓')?' ok':m.includes('[J3]')?' w':'');d.textContent='> '+m;logp.insertBefore(d,document.getElementById('lcur'));if(logp.children.length>9)logp.children[1].remove();}
+  const iv=setInterval(()=>{ep++;if(ep>E){clearInterval(iv);return;}charts.forEach(c=>dc(c,ep+1));document.getElementById('ep').textContent=ep;document.getElementById('eta').textContent=Math.max(0,Math.floor((E-ep)*2.4))+'s';document.getElementById('ml').textContent=ld[ep-1].toFixed(3);document.getElementById('me').textContent=td[ep-1].toFixed(1);document.getElementById('mv').textContent=cd[ep-1].toFixed(3);if(ep>25){document.getElementById('ms').textContent=(90+ep*.28).toFixed(1)+'%';document.getElementById('ms').className='mval conv';}if(ep>28)document.getElementById('ep').style.color='var(--green)';const lep=Math.floor(ep/4);if(lep>li&&li<logs.length)addLog(logs[li++]);},180);
+  animH.learn=iv;
+}
+
+// ═══════════════════════════════════════════════
+// S4 Fail robot
+// ═══════════════════════════════════════════════
+function initFail(){
+  const canvas=document.getElementById('rfc');const cont=canvas.parentElement;
+  canvas.width=cont.offsetWidth;canvas.height=cont.offsetHeight;
+  const ctx=canvas.getContext('2d');const W=canvas.width,H=canvas.height;
+  let t=0,iki=0,shake=0;
+  const sp=[];for(let i=0;i<=60;i++)sp.push({x:W*.2+(i/60)*(W*.65),y:H*.72+Math.sin(i*.2)*5});
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='rgba(26,42,64,.3)';ctx.lineWidth=1;
+    for(let x=0;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    ctx.beginPath();sp.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.strokeStyle='rgba(74,96,128,.4)';ctx.lineWidth=3;ctx.stroke();
+    t++;const sh=shake*(Math.random()-.5)*8;ctx.save();ctx.translate(sh*.5,sh*.3);
+    const fa=.8+Math.sin(t*.05)*.3+(t>80?Math.sin(t*.2)*.15:0);
+    const joints=[-0.3+Math.sin(t*.02)*.1,.5+Math.sin(t*.015)*.08,fa,-0.6,.3];
+    const lens=[80,100,80,60,40];
+    let x=W*.5,y=H*.55,ang=-Math.PI/2;
+    ctx.beginPath();ctx.rect(W*.5-22,H*.55,44,18);ctx.fillStyle='#1a2a3a';ctx.fill();ctx.strokeStyle='#ff3d3d';ctx.lineWidth=2;ctx.stroke();
+    for(let i=0;i<joints.length;i++){
+      ang+=joints[i];const nx=x+Math.cos(ang)*lens[i],ny=y+Math.sin(ang)*lens[i];
+      ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(nx,ny);ctx.strokeStyle='#ff3d3d';ctx.lineWidth=i===2?6:4;ctx.lineCap='round';ctx.stroke();
+      ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);ctx.fillStyle='#0b1220';ctx.fill();ctx.strokeStyle='#ff3d3d';ctx.lineWidth=2;ctx.stroke();
+      if(i===2){const g=ctx.createRadialGradient(x,y,2,x,y,28);g.addColorStop(0,'rgba(255,61,61,.5)');g.addColorStop(1,'rgba(255,61,61,0)');ctx.beginPath();ctx.arc(x,y,28,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();}
+      x=nx;y=ny;
+    }
+    ctx.restore();
+    if(t>60)shake=Math.min(1.5,shake+.02);
+    if(t%8===0){iki++;document.getElementById('iki').textContent=iki;document.getElementById('ikr').textContent=(15.2-iki*.1).toFixed(1)+'mm';}
+    animH.fail=requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+// ═══════════════════════════════════════════════
+// S5 Success robot
+// ═══════════════════════════════════════════════
+function initSuccess(){
+  const canvas=document.getElementById('roc');const cont=canvas.parentElement;
+  canvas.width=cont.offsetWidth;canvas.height=cont.offsetHeight;
+  const ctx=canvas.getContext('2d');const W=canvas.width,H=canvas.height;
+  let t=0,wp=0;const sparks=[];
+  const sp=[];for(let i=0;i<=80;i++)sp.push({x:W*.18+(i/80)*(W*.64),y:H*.72+Math.sin(i*.18)*4});
+  const mets=[{lbl:'Trajectory Error',b:85,a:4,bf:'18.3mm',af:'0.4mm'},{lbl:'Constraint Violations',b:92,a:0,bf:'3 errors',af:'None ✓'},{lbl:'Path Smoothness',b:28,a:96,bf:'34%',af:'96%',rev:true},{lbl:'Similarity Score',b:20,a:97,bf:'—',af:'97.8%',rev:true}];
+  document.getElementById('cmp').innerHTML=mets.map(m=>`<div class="cbar-row"><div class="cbar-lbl">${m.lbl}</div><div class="cbar-bars"><div class="cbar b4" style="width:${(m.rev?100-m.b:m.b)*1.3}px">${m.bf}</div><div class="cbar af" style="width:${(m.rev?m.a:100-m.a)*1.3}px">${m.af}</div><span class="cdiff">${m.rev?'↑':'↓'}</span></div></div>`).join('');
+  function addSpark(x,y){for(let i=0;i<3;i++)sparks.push({x,y,vx:(Math.random()-.5)*5,vy:-Math.random()*6-2,life:1,decay:.04+Math.random()*.04,size:2+Math.random()*3,color:Math.random()>.5?'#f5a623':'#ff6b35'});}
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='rgba(0,100,60,.15)';ctx.lineWidth=1;
+    for(let x=0;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    ctx.beginPath();sp.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.strokeStyle='rgba(0,80,40,.4)';ctx.lineWidth=4;ctx.stroke();
+    if(wp>1){ctx.beginPath();sp.slice(0,wp).forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));const g=ctx.createLinearGradient(sp[0].x,0,sp[Math.min(wp-1,79)].x,0);g.addColorStop(0,'rgba(0,230,118,.9)');g.addColorStop(1,'rgba(0,200,100,.6)');ctx.strokeStyle=g;ctx.lineWidth=5;ctx.stroke();ctx.beginPath();sp.slice(0,wp).forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.strokeStyle='rgba(0,230,118,.15)';ctx.lineWidth=14;ctx.stroke();}
+    t++;
+    const jt=t*.025;const joints=[-0.2+Math.sin(jt)*.05,.4+Math.sin(jt*.8)*.04,.5+Math.sin(jt*.6)*.03,-0.5,.25];const lens=[80,100,80,60,40];
+    let x=W*.5,y=H*.55,ang=-Math.PI/2;
+    ctx.beginPath();ctx.rect(W*.5-22,H*.55,44,18);ctx.fillStyle='#0a1a20';ctx.fill();ctx.strokeStyle='#00e676';ctx.lineWidth=2;ctx.stroke();
+    for(let i=0;i<joints.length;i++){ang+=joints[i];const nx=x+Math.cos(ang)*lens[i],ny=y+Math.sin(ang)*lens[i];ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(nx,ny);ctx.strokeStyle='#00e676';ctx.lineWidth=4;ctx.lineCap='round';ctx.stroke();ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);ctx.fillStyle='#0b1220';ctx.fill();ctx.strokeStyle='#00e676';ctx.lineWidth=2;ctx.stroke();x=nx;y=ny;}
+    ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);const tg=ctx.createRadialGradient(x,y,0,x,y,18);tg.addColorStop(0,'rgba(0,230,118,.9)');tg.addColorStop(1,'rgba(0,230,118,0)');ctx.fillStyle=tg;ctx.fill();
+    if(t%2===0&&wp<sp.length){wp++;if(t%4===0)addSpark(sp[wp-1].x,sp[wp-1].y);}
+    for(let i=sparks.length-1;i>=0;i--){const s=sparks[i];s.x+=s.vx;s.y+=s.vy;s.vy+=.3;s.life-=s.decay;if(s.life<=0){sparks.splice(i,1);continue;}ctx.beginPath();ctx.arc(s.x,s.y,s.size*s.life,0,Math.PI*2);ctx.fillStyle=s.color;ctx.globalAlpha=s.life;ctx.fill();ctx.globalAlpha=1;}
+    ctx.font='bold 12px Share Tech Mono';ctx.fillStyle='rgba(0,230,118,.8)';ctx.fillText('SIM: '+Math.min(97.8,wp/sp.length*100).toFixed(1)+'%',18,26);
+    animH.succ=requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+// ═══════════════════════════════════════════════
+// S6 LIVE COACHING (핵심 신규 기능)
+// ═══════════════════════════════════════════════
+function initCoaching(){
+  const canvas=document.getElementById('coach-canvas');
+  const cont=canvas.parentElement;
+  canvas.width=cont.offsetWidth; canvas.height=cont.offsetHeight;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  let t=0, score=43, sessionT=0;
+
+  // 로봇 기준 궤적 (파란 선)
+  const idealPts=[];
+  for(let i=0;i<=120;i++){
+    idealPts.push({
+      x: W*.1 + (i/120)*(W*.8),
+      y: H*.55 + Math.sin(i/120*Math.PI*2.5)*80
+    });
+  }
+
+  // 신입 궤적 (노란선 - 오차 포함, 점점 개선)
+  function getTraineePt(idx, t){
+    const base = idealPts[idx];
+    const improvement = Math.min(1, t/1200); // 시간이 지날수록 개선
+    const errAmp = 30*(1-improvement*0.7);
+    return {
+      x: base.x + (Math.random()-.5)*errAmp*0.3 + Math.sin(t*.05+idx*.3)*errAmp*.4,
+      y: base.y + (Math.random()-.5)*errAmp*0.4 + Math.cos(t*.04+idx*.2)*errAmp*.5
+    };
+  }
+
+  // AI 메시지 시나리오
+  const messages=[
+    {t:60,  type:'warn', text:'⚠ 토치 각도가 기준보다 8° 높습니다. 낮춰주세요.'},
+    {t:140, type:'tip',  text:'💡 이동 속도를 10% 줄이면 더 안정적입니다.'},
+    {t:220, type:'ok',   text:'✓ 용접 시작점 진입 각도 — 매우 좋습니다!'},
+    {t:310, type:'warn', text:'⚠ 손목 떨림 감지됨. 팔꿈치를 고정하세요.'},
+    {t:400, type:'tip',  text:'💡 궤적 오차가 줄어들고 있습니다. 이 속도 유지!'},
+    {t:500, type:'ok',   text:'✓ 중간 구간 패턴 — 로봇과 91% 일치!'},
+    {t:610, type:'warn', text:'⚠ 곡선 구간에서 속도 급격히 감소. 균일하게 유지.'},
+    {t:720, type:'ok',   text:'✓ 속도 안정성 개선 확인! 점수 +3'},
+    {t:850, type:'tip',  text:'💡 마지막 직선 구간 — 토치를 5° 더 기울이세요.'},
+    {t:980, type:'ok',   text:'✓ 세션 완료! 오늘 최고 점수 달성 🎉'},
+  ];
+  let msgIdx=0;
+
+  // 점수 링 업데이트 함수
+  function updateRing(s){
+    const fill=document.getElementById('ring-fill');
+    const circumf=283;
+    fill.style.strokeDashoffset=circumf - (s/100)*circumf;
+    document.getElementById('score-num').textContent=Math.round(s);
+  }
+
+  function addAIMsg(type, text){
+    const msgs=document.getElementById('ai-msgs');
+    if(msgs.children.length>6) msgs.children[1].remove();
+    const d=document.createElement('div');
+    d.className='ai-msg '+type;
+    const now=new Date();const ts=`${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+    d.innerHTML=`<div class="msg-time">${ts}</div>${text}`;
+    msgs.appendChild(d);
+    msgs.scrollTop=msgs.scrollHeight;
+  }
+
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+
+    // 배경 격자
+    ctx.strokeStyle='rgba(0,229,255,.04)';ctx.lineWidth=1;
+    for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+    // 워크피스 (용접 대상)
+    ctx.fillStyle='rgba(20,35,55,.8)';
+    ctx.fillRect(W*.08, H*.62, W*.84, 8);
+    ctx.strokeStyle='rgba(74,96,128,.4)';ctx.lineWidth=2;
+    ctx.strokeRect(W*.08, H*.62, W*.84, 8);
+
+    const improvement=Math.min(1,t/1200);
+
+    // 오차 영역 (빨간 zone)
+    ctx.beginPath();
+    for(let i=0;i<idealPts.length;i++){
+      const p=idealPts[i];
+      const errW=22*(1-improvement*.65);
+      i===0?ctx.moveTo(p.x,p.y-errW):ctx.lineTo(p.x,p.y-errW);
+    }
+    for(let i=idealPts.length-1;i>=0;i--){
+      const p=idealPts[i];
+      const errW=22*(1-improvement*.65);
+      ctx.lineTo(p.x,p.y+errW);
+    }
+    ctx.closePath();
+    ctx.fillStyle='rgba(255,61,61,.06)';ctx.fill();
+    ctx.strokeStyle='rgba(255,61,61,.15)';ctx.lineWidth=1;ctx.stroke();
+
+    // 이상 궤적 (파란 기준선)
+    ctx.beginPath();
+    idealPts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
+    ctx.strokeStyle='rgba(0,229,255,.7)';ctx.lineWidth=2.5;
+    ctx.setLineDash([10,5]);ctx.stroke();ctx.setLineDash([]);
+
+    // 신입 실제 경로 (노란선)
+    ctx.beginPath();
+    let first=true;
+    for(let i=0;i<idealPts.length;i++){
+      const p=getTraineePt(i,t);
+      if(first){ctx.moveTo(p.x,p.y);first=false;}else ctx.lineTo(p.x,p.y);
+    }
+    ctx.strokeStyle=`rgba(245,166,35,${.6+improvement*.3})`;
+    ctx.lineWidth=2;ctx.stroke();
+
+    // 현재 토치 위치 (신입)
+    const headIdx=Math.min(Math.floor((t%300)/300*idealPts.length),idealPts.length-1);
+    const headPt=getTraineePt(headIdx,t);
+    ctx.beginPath();ctx.arc(headPt.x,headPt.y,8,0,Math.PI*2);
+    ctx.fillStyle='#f5a623';ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    // 토치 불꽃
+    if(t%4<2){
+      const fg=ctx.createRadialGradient(headPt.x,headPt.y,2,headPt.x,headPt.y,18);
+      fg.addColorStop(0,'rgba(255,200,50,.7)');fg.addColorStop(1,'rgba(255,100,0,0)');
+      ctx.beginPath();ctx.arc(headPt.x,headPt.y,18,0,Math.PI*2);ctx.fillStyle=fg;ctx.fill();
+    }
+
+    // 이상 궤적 토치 위치
+    const idealHead=idealPts[headIdx];
+    ctx.beginPath();ctx.arc(idealHead.x,idealHead.y,6,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,229,255,.6)';ctx.fill();
+
+    // 오차 연결선
+    const errDist=Math.hypot(headPt.x-idealHead.x,headPt.y-idealHead.y);
+    if(errDist>8){
+      ctx.beginPath();ctx.moveTo(headPt.x,headPt.y);ctx.lineTo(idealHead.x,idealHead.y);
+      ctx.strokeStyle='rgba(255,61,61,.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+    }
+
+    // 범례
+    ctx.font='11px Share Tech Mono';
+    ctx.fillStyle='rgba(0,229,255,.8)';
+    ctx.beginPath();ctx.moveTo(20,H-50);ctx.lineTo(50,H-50);ctx.strokeStyle='rgba(0,229,255,.7)';ctx.lineWidth=2;ctx.setLineDash([6,3]);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillText('AI 기준 궤적',56,H-46);
+    ctx.fillStyle='rgba(245,166,35,.9)';
+    ctx.beginPath();ctx.moveTo(20,H-30);ctx.lineTo(50,H-30);ctx.strokeStyle='rgba(245,166,35,.8)';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillText('신입 실제 경로',56,H-26);
+
+    t++;
+
+    // 점수 점진적 상승
+    const targetScore=43+improvement*31;
+    score+=(targetScore-score)*.02;
+    updateRing(score);
+
+    // 실시간 메트릭 업데이트
+    const angleErr=(8-improvement*5.5+Math.sin(t*.05)*.8);
+    const speedR=(0.82+improvement*.15+Math.sin(t*.04)*.03);
+    const steady=(55+improvement*38+Math.sin(t*.06)*3);
+    const pathErr=(22-improvement*18+Math.sin(t*.03)*2);
+
+    document.getElementById('lm-angle').textContent=angleErr.toFixed(1)+'°';
+    document.getElementById('lm-speed').textContent=speedR.toFixed(2)+'x';
+    document.getElementById('lm-steady').textContent=steady.toFixed(0)+'%';
+    document.getElementById('lm-err').textContent=pathErr.toFixed(1)+'mm';
+    document.getElementById('lmb-angle').style.width=Math.min(100,angleErr/15*100)+'%';
+    document.getElementById('lmb-speed').style.width=Math.min(100,speedR*100)+'%';
+    document.getElementById('lmb-steady').style.width=steady+'%';
+    document.getElementById('lmb-err').style.width=Math.min(100,pathErr/30*100)+'%';
+
+    // 색상 조건부 업데이트
+    document.getElementById('lm-angle').style.color=angleErr>5?'var(--red)':'var(--green)';
+    document.getElementById('lm-err').style.color=pathErr>10?'var(--red)':pathErr>5?'var(--accent)':'var(--green)';
+
+    // 점수 변화
+    const deltaStr=`↑ +${(score-43).toFixed(0)} from last session`;
+    document.getElementById('score-delta').textContent=deltaStr;
+
+    // AI 메시지 스케줄
+    if(msgIdx<messages.length && t>=messages[msgIdx].t){
+      addAIMsg(messages[msgIdx].type, messages[msgIdx].text);
+      msgIdx++;
+    }
+
+    animH.coach=requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+// ═══════════════════════════════════════════════
+// S7 PROGRESS DASHBOARD
+// ═══════════════════════════════════════════════
+function initDashboard(){
+  // Cert bar animate
+  setTimeout(()=>{
+    const cf=document.getElementById('cert-fill');
+    if(cf) cf.style.width='67%';
+  },300);
+
+  // Session data
+  const sessions=[
+    {day:'Day 1',  score:43, color:'#ff6b35'},
+    {day:'Day 2',  score:47, color:'#ff8050'},
+    {day:'Day 3',  score:49, color:'#ff9060'},
+    {day:'Day 4',  score:52, color:'#ffa070'},
+    {day:'Day 5',  score:54, color:'#f5a623'},
+    {day:'Day 6',  score:58, color:'#d4b040'},
+    {day:'Day 7',  score:60, color:'#b0c050'},
+    {day:'Day 8',  score:63, color:'#80d060'},
+    {day:'Day 9',  score:66, color:'#50d870'},
+    {day:'Day 10', score:69, color:'#30e080'},
+    {day:'Day 11', score:72, color:'#10e676'},
+    {day:'Day 12', score:74, color:'#00e676'},
+  ];
+
+  // Growth chart
+  const canvas=document.getElementById('growth-chart');
+  const par=canvas.parentElement;
+  canvas.width=par.offsetWidth; canvas.height=par.offsetHeight;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  const pad={l:36,r:16,t:14,b:24};
+  const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(26,42,64,.5)';ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=pad.t+(i/4)*ch;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+cw,y);ctx.stroke();ctx.fillStyle='rgba(74,96,128,.7)';ctx.font='8px Share Tech Mono';ctx.textAlign='right';ctx.fillText((100-(i/4)*60).toFixed(0),pad.l-3,y+3);}
+
+  // 영역 그라디언트
+  const grad=ctx.createLinearGradient(0,pad.t,0,pad.t+ch);
+  grad.addColorStop(0,'rgba(0,229,255,.25)');grad.addColorStop(1,'rgba(0,229,255,0)');
+  ctx.beginPath();
+  sessions.forEach((s,i)=>{const x=pad.l+(i/(sessions.length-1))*cw,y=pad.t+ch-(s.score-40)/(100-40)*ch;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+  ctx.lineTo(pad.l+cw,pad.t+ch);ctx.lineTo(pad.l,pad.t+ch);ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();
+  sessions.forEach((s,i)=>{const x=pad.l+(i/(sessions.length-1))*cw,y=pad.t+ch-(s.score-40)/(100-40)*ch;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+  ctx.strokeStyle='#00e5ff';ctx.lineWidth=2.5;ctx.stroke();
+  sessions.forEach((s,i)=>{
+    const x=pad.l+(i/(sessions.length-1))*cw,y=pad.t+ch-(s.score-40)/(100-40)*ch;
+    ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle=i===sessions.length-1?'#fff':'#00e5ff';ctx.fill();
+    if(i===0||i===sessions.length-1){ctx.fillStyle='rgba(0,229,255,.8)';ctx.font='9px Share Tech Mono';ctx.textAlign='center';ctx.fillText(s.score,x,y-8);}
+  });
+  // x labels
+  ctx.fillStyle='rgba(74,96,128,.7)';ctx.font='8px Share Tech Mono';ctx.textAlign='center';
+  sessions.forEach((s,i)=>{if(i%3===0||i===sessions.length-1){const x=pad.l+(i/(sessions.length-1))*cw;ctx.fillText(s.day,x,pad.t+ch+14);}});
+
+  // Session list
+  const sl=document.getElementById('sess-list');
+  sl.innerHTML=sessions.map((s,i)=>`
+    <div class="sess-item">
+      <div class="sess-date">${s.day}</div>
+      <div class="sess-bar-wrap"><div class="sess-bar" style="width:${(s.score-40)/(100-40)*100}%;background:${s.color};"></div></div>
+      <div class="sess-score" style="color:${s.color}">${s.score}</div>
+      <div class="sess-delta" style="color:${i===0?'var(--dim)':'var(--green)'}">${i===0?'—':'+'+( s.score-sessions[i-1].score)}</div>
+    </div>`).join('');
+
+  // Skill breakdown
+  const skills=[
+    {name:'토치 각도 제어',pct:78,color:'#00e5ff'},
+    {name:'이동 속도 일관성',pct:65,color:'#00e676'},
+    {name:'궤적 정밀도',pct:71,color:'#f5a623'},
+    {name:'손 안정성',pct:60,color:'#a855f7'},
+    {name:'시작/종료 처리',pct:82,color:'#1e90ff'},
+  ];
+  document.getElementById('skill-grid').innerHTML=skills.map(s=>`
+    <div class="skill-row">
+      <div class="skill-name"><span>${s.name}</span><span style="color:${s.color}">${s.pct}%</span></div>
+      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:${s.pct}%;background:linear-gradient(90deg,${s.color}88,${s.color});"></div></div>
+    </div>`).join('');
+
+  // Today compare
+  const tc=[{lbl:'토치 각도 오차',b:'14.2°',a:'5.8°'},{lbl:'궤적 오차',b:'28.4mm',a:'9.2mm'},{lbl:'속도 안정성',b:'41%',a:'79%'},{lbl:'종합 점수',b:'43점',a:'74점'}];
+  document.getElementById('today-compare').innerHTML=tc.map(c=>`
+    <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;">
+      <span style="color:var(--dim)">${c.lbl}</span>
+      <span><span style="color:var(--red);margin-right:6px">${c.b}</span><span style="color:var(--green)">→ ${c.a}</span></span>
+    </div>`).join('');
+
+  // Strengths
+  const str=[{icon:'✓',color:'var(--green)',txt:'시작점 진입 각도 안정화 (85%)'},{icon:'✓',color:'var(--green)',txt:'직선 구간 속도 제어 향상'},{icon:'△',color:'var(--accent)',txt:'곡선 구간 손떨림 개선 필요'},{icon:'△',color:'var(--accent)',txt:'종료점 각도 조정 연습 필요'}];
+  document.getElementById('strengths').innerHTML=str.map(s=>`
+    <div style="display:flex;gap:6px;padding:4px 0;font-family:var(--mono);font-size:9px;">
+      <span style="color:${s.color};flex-shrink:0">${s.icon}</span><span style="color:var(--text)">${s.txt}</span>
+    </div>`).join('');
+
+  // Next goals
+  const goals=['궤적 오차 8mm 이하 유지','토치 각도 편차 ±3° 이내','연속 10분 안정 용접'];
+  document.getElementById('next-goals').innerHTML=goals.map((g,i)=>`
+    <div style="display:flex;gap:6px;padding:3px 0;font-family:var(--mono);font-size:9px;color:${i<2?'var(--dim)':'#00e5ff'};">
+      <span>${i<2?'□':'◉'}</span><span>${g}</span>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════
+// S8 MULTILINGUAL COACHING
+// ═══════════════════════════════════════════════
+
+// 번역 데이터베이스 (LLM이 실제로 생성하는 것처럼 보이게)
+const scenarios = [
+  {
+    id:0, icon:'⚠', type:'warn',
+    ko:'토치 각도가 기준보다 8도 높습니다. 지금 즉시 낮춰주세요.',
+    translations:{
+      vn:'Góc đuốc cao hơn tiêu chuẩn 8 độ. Hãy hạ xuống ngay bây giờ.',
+      id:'Sudut obor 8 derajat lebih tinggi dari standar. Turunkan sekarang juga.',
+      ph:'Ang anggulo ng torch ay 8 degrees na mas mataas kaysa pamantayan. Ibaba ito ngayon.',
+      th:'มุมทอร์ชสูงกว่ามาตรฐาน 8 องศา กรุณาลดลงทันที',
+      zh:'焊枪角度比标准高8度，请立即降低。',
+      en:'Torch angle is 8° above standard. Lower it immediately.',
+    },
+    phonetic:{vn:'(góc đuốc)',id:'(sudut obor)',ph:'(anggulo ng torch)',th:'(มุมทอร์ช)',zh:'(hàn qiāng jiǎodù)',en:'(torch angle)'},
+    latencies:{vn:280,id:310,ph:340,th:295,zh:260,en:250},
+    workerLang:'vn', workerName:'Nguyen Van A', devFlag:'🇻🇳',
+  },
+  {
+    id:1, icon:'💡', type:'tip',
+    ko:'현재 이동 속도가 너무 빠릅니다. 10% 줄여서 균일하게 유지해주세요.',
+    translations:{
+      vn:'Tốc độ di chuyển hiện tại quá nhanh. Hãy giảm 10% và duy trì đều đặn.',
+      id:'Kecepatan gerakan saat ini terlalu cepat. Kurangi 10% dan jaga kecepatan merata.',
+      ph:'Ang kasalukuyang bilis ng paggalaw ay napakabilis. Bawasan ng 10% at panatilihing pantay.',
+      th:'ความเร็วการเคลื่อนที่ขณะนี้เร็วเกินไป ลดลง 10% และรักษาให้สม่ำเสมอ',
+      zh:'当前移动速度过快，请减慢10%并保持匀速。',
+      en:'Current movement speed is too fast. Reduce by 10% and maintain evenly.',
+    },
+    phonetic:{vn:'(tốc độ di chuyển)',id:'(kecepatan gerakan)',ph:'(bilis ng paggalaw)',th:'(ความเร็ว)',zh:'(yídòng sùdù)',en:'(movement speed)'},
+    latencies:{vn:295,id:320,ph:350,th:305,zh:270,en:245},
+    workerLang:'id', workerName:'Budi Santoso', devFlag:'🇮🇩',
+  },
+  {
+    id:2, icon:'🚨', type:'danger',
+    ko:'즉시 작업을 멈추세요! 로봇 팔과의 거리가 안전 기준 이하입니다.',
+    translations:{
+      vn:'Dừng làm việc ngay lập tức! Khoảng cách với cánh tay robot dưới mức an toàn.',
+      id:'Hentikan pekerjaan segera! Jarak dengan lengan robot di bawah standar keamanan.',
+      ph:'Itigil ang trabaho agad! Ang distansya sa robot arm ay nasa ibaba ng safety standard.',
+      th:'หยุดทำงานทันที! ระยะห่างจากแขนหุ่นยนต์ต่ำกว่ามาตรฐานความปลอดภัย',
+      zh:'立即停止工作！与机器人手臂的距离低于安全标准。',
+      en:'STOP immediately! Distance to robot arm is below safety threshold.',
+    },
+    phonetic:{vn:'(dừng làm việc)',id:'(hentikan pekerjaan)',ph:'(itigil ang trabaho)',th:'(หยุดทำงาน)',zh:'(lìjí tíngzhǐ)',en:'(stop immediately)'},
+    latencies:{vn:210,id:225,ph:240,th:215,zh:200,en:195},
+    workerLang:'ph', workerName:'Jose Dela Cruz', devFlag:'🇵🇭',
+  },
+  {
+    id:3, icon:'✓', type:'ok',
+    ko:'완벽합니다! 방금 구간의 용접 정밀도가 97%를 기록했습니다. 계속하세요!',
+    translations:{
+      vn:'Hoàn hảo! Độ chính xác hàn của đoạn vừa rồi đạt 97%. Tiếp tục nhé!',
+      id:'Sempurna! Akurasi pengelasan segmen barusan mencapai 97%. Terus lanjutkan!',
+      ph:'Perpekto! Ang katumpakan ng welding sa huling bahagi ay umabot sa 97%. Ituloy!',
+      th:'สมบูรณ์แบบ! ความแม่นยำในการเชื่อมของส่วนนี้ได้ 97% ทำต่อไปเลย!',
+      zh:'完美！刚才那段的焊接精度达到了97%，继续保持！',
+      en:'Perfect! Welding accuracy of the last segment reached 97%. Keep it up!',
+    },
+    phonetic:{vn:'(hoàn hảo)',id:'(sempurna)',ph:'(perpekto)',th:'(สมบูรณ์แบบ)',zh:'(wánměi)',en:'(perfect)'},
+    latencies:{vn:290,id:315,ph:345,th:300,zh:265,en:248},
+    workerLang:'th', workerName:'Somchai Jaidee', devFlag:'🇹🇭',
+  },
+];
+
+let activeLang = 'vn';
+let transCount = 0;
+let latencies = [];
+let waveAnimHandles = {};
+
+// ── 언어 코드 → Web Speech API 언어 태그 매핑 ──
+const speechLang = {
+  vn:'vi-VN', id:'id-ID', ph:'fil-PH',
+  th:'th-TH', zh:'zh-CN', en:'en-US',
+};
+
+// TTS: 텍스트를 실제 음성으로 읽기
+function speakText(text, lang, rate=1.0, pitch=1.0) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel(); // 이전 음성 중단
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = speechLang[lang] || 'en-US';
+  utter.rate = rate;
+  utter.pitch = pitch;
+  utter.volume = 0.9;
+  // 해당 언어 목소리 우선 선택
+  const voices = window.speechSynthesis.getVoices();
+  const match = voices.find(v => v.lang.startsWith(utter.lang.split('-')[0]));
+  if (match) utter.voice = match;
+  window.speechSynthesis.speak(utter);
+}
+
+function selectLang(lang) {
+  activeLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    const isThis = b.dataset.lang === lang;
+    b.classList.toggle('active', isThis);
+    b.querySelector('.lang-status').className = 'lang-status ' + (isThis?'on':'off');
+    b.querySelector('.lang-status').textContent = isThis?'ACTIVE':'SELECT';
+  });
+  const langMeta = {
+    vn:{flag:'🇻🇳',name:'Nguyen Van A'},
+    id:{flag:'🇮🇩',name:'Budi Santoso'},
+    ph:{flag:'🇵🇭',name:'Jose Dela Cruz'},
+    th:{flag:'🇹🇭',name:'Somchai Jaidee'},
+    zh:{flag:'🇨🇳',name:'Wang Fang'},
+    en:{flag:'🇺🇸',name:'James Wilson'},
+  };
+  const m = langMeta[lang];
+  document.getElementById('dev-flag').textContent = m.flag;
+  document.getElementById('dev-name').textContent = m.name;
+}
+
+function fireScenario(idx) {
+  lastScenarioIdx = idx;
+  const sc = scenarios[idx];
+
+  // 버튼 하이라이트
+  document.querySelectorAll('.trigger-btn').forEach((b,i)=>{
+    b.classList.toggle('fired', i===idx);
+    setTimeout(()=>b.classList.remove('fired'), 1600);
+  });
+
+  // 원문 표시
+  document.getElementById('src-text').textContent = sc.ko;
+  document.getElementById('src-sub').textContent = `[${sc.icon} ${sc.type.toUpperCase()}] → LLM 번역 + TTS 출력 중...`;
+  document.getElementById('badge-lat').textContent = '⟳ Translating...';
+
+  // ── 한국어 원문 먼저 읽기 ──
+  speakText(sc.ko, 'ko'/* fallback en */, 1.0, 1.0);
+  // 한국어 읽기 완료 후 선택된 언어로 읽기 (약 3.5초 후)
+  const koDelay = Math.max(2500, sc.ko.length * 120);
+  setTimeout(()=>{
+    const targetText = sc.translations[activeLang] || sc.translations['en'];
+    // 긴급도에 따라 빠르기/높이 조절
+    const rate = sc.type==='danger'? 1.25 : sc.type==='ok'? 0.95 : 1.05;
+    const pitch = sc.type==='danger'? 1.3 : sc.type==='ok'? 1.1 : 1.0;
+    speakText(targetText, activeLang, rate, pitch);
+  }, koDelay);
+
+  const urgClass = sc.type==='danger'?'warn': sc.type==='warn'?'warn': sc.type==='ok'?'ok':'tip';
+  const urgText  = sc.type==='danger'?'⚠ URGENT': sc.type==='warn'?'⚠ WARNING': sc.type==='ok'?'✓ POSITIVE':'💡 TIP';
+
+  // 6개 언어 타이핑 + 파형
+  const langs = ['vn','id','ph','th','zh','en'];
+  langs.forEach((lang, i) => {
+    const lat = sc.latencies[lang];
+    setTimeout(()=>{
+      typeMessage(lang, sc.translations[lang], urgClass, urgText, lat);
+      startWaveAnim(lang);
+    }, i * 80);
+  });
+
+  // 디바이스 화면 업데이트
+  setTimeout(()=>{
+    const workerMsg = sc.translations[activeLang] || sc.translations['vn'];
+    const phoneticText = sc.phonetic[activeLang] || '';
+    document.getElementById('dev-msg').innerHTML = workerMsg;
+    document.getElementById('dev-phonetic').textContent = phoneticText;
+    document.getElementById('dev-urgency').textContent = urgText;
+    document.getElementById('dev-urgency').style.color = sc.type==='ok'?'var(--green)':sc.type==='danger'?'var(--red)':'var(--accent)';
+    document.getElementById('dev-urgency').style.borderColor = sc.type==='ok'?'rgba(0,230,118,.3)':sc.type==='danger'?'rgba(255,61,61,.3)':'rgba(245,166,35,.3)';
+    document.getElementById('dev-urgency').style.background = sc.type==='ok'?'rgba(0,230,118,.1)':sc.type==='danger'?'rgba(255,61,61,.15)':'rgba(245,166,35,.08)';
+    // pulse device
+    const dw = document.getElementById('dev-wave');
+    dw.style.background = sc.type==='ok'?'#051408':sc.type==='danger'?'#140505':'#060e18';
+    document.querySelectorAll('.wbar').forEach((bar,i)=>{
+      const h = sc.type==='danger'? (18+Math.random()*16) : sc.type==='ok'? (10+Math.random()*12) : (8+Math.random()*14);
+      bar.style.setProperty('--h', h+'px');
+      bar.style.background = sc.type==='ok'?'var(--green)':sc.type==='danger'?'var(--red)':'#a855f7';
+    });
+  }, 100);
+
+  // Stats
+  transCount += 6;
+  document.getElementById('trans-counter').textContent = transCount;
+  latencies.push(...Object.values(sc.latencies));
+  const avg = Math.round(latencies.reduce((a,b)=>a+b,0)/latencies.length);
+  document.getElementById('avg-lat').textContent = avg;
+  document.getElementById('llm-lat').textContent = avg + 'ms';
+  document.getElementById('llm-tok').textContent = (transCount * 32) + ' total';
+  document.getElementById('llm-count').textContent = transCount;
+  const totalMs = Math.max(...Object.values(sc.latencies));
+  setTimeout(()=>{document.getElementById('badge-lat').textContent = `✓ ${totalMs}ms`;},totalMs+50);
+  document.getElementById('src-sub').textContent = `[${sc.icon} ${sc.type.toUpperCase()}] → 6개 언어 동시 번역 완료`;
+}
+
+function typeMessage(lang, text, urgClass, urgText, latMs) {
+  setTimeout(()=>{
+    const el = document.getElementById('msg-'+lang);
+    const urgEl = document.getElementById('urg-'+lang);
+    const latEl = document.getElementById('lat-'+lang);
+    if(!el) return;
+    urgEl.className = 'tc-urgency ' + urgClass;
+    urgEl.textContent = urgText;
+    latEl.textContent = latMs + 'ms';
+    latEl.className = 'tc-latency ' + (latMs < 300 ? 'fast' : 'med');
+    el.textContent = '';
+    el.classList.add('typing');
+    let i = 0;
+    const speed = Math.max(18, Math.floor(latMs / text.length));
+    const iv = setInterval(()=>{
+      if(i < text.length){
+        el.textContent = text.slice(0, ++i);
+      } else {
+        clearInterval(iv);
+        el.classList.remove('typing');
+      }
+    }, speed);
+    animH['type_'+lang] = iv;
+  }, latMs);
+}
+
+function startWaveAnim(lang) {
+  const canvas = document.getElementById('wave-'+lang);
+  if(!canvas) return;
+  canvas.width = canvas.parentElement.offsetWidth || 80;
+  canvas.height = 18;
+  const ctx = canvas.getContext('2d');
+  let t = 0;
+  if(waveAnimHandles[lang]) cancelAnimationFrame(waveAnimHandles[lang]);
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const bars = Math.floor(canvas.width / 4);
+    for(let i=0;i<bars;i++){
+      const h = 4 + Math.abs(Math.sin(i*.8 + t*.12)) * 11;
+      ctx.fillStyle = `rgba(168,85,247,${0.5+Math.sin(i*.5+t*.1)*.3})`;
+      ctx.fillRect(i*4, (18-h)/2, 3, h);
+    }
+    t++;
+    waveAnimHandles[lang] = requestAnimationFrame(draw);
+  }
+  draw();
+  // Stop after 4s
+  setTimeout(()=>{cancelAnimationFrame(waveAnimHandles[lang]);ctx.clearRect(0,0,canvas.width,canvas.height);
+    // draw flat line
+    ctx.strokeStyle='rgba(168,85,247,.2)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,9);ctx.lineTo(canvas.width,9);ctx.stroke();
+  }, 4000);
+}
+
+// 각 카드 🔊 클릭 → 해당 언어 재생
+let lastScenarioIdx = 0; // 마지막으로 fire된 시나리오 기억
+function replaySpeech(lang) {
+  const sc = scenarios[lastScenarioIdx];
+  const text = sc.translations[lang];
+  if(!text) return;
+  const rate = sc.type==='danger'? 1.25 : sc.type==='ok'? 0.95 : 1.05;
+  const pitch = sc.type==='danger'? 1.3 : sc.type==='ok'? 1.1 : 1.0;
+  speakText(text, lang, rate, pitch);
+  startWaveAnim(lang);
+}
+
+// 음성 목록이 비동기 로드되므로 미리 트리거
+if(window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = ()=>{ window.speechSynthesis.getVoices(); };
+}
+
+function initMultilingual() {
+  // Reset wave canvases
+  ['vn','id','ph','th','zh','en'].forEach(lang=>{
+    const canvas = document.getElementById('wave-'+lang);
+    if(!canvas) return;
+    canvas.width = canvas.parentElement.offsetWidth || 80;
+    canvas.height = 18;
+    const ctx = canvas.getContext('2d');
+    ctx.strokeStyle='rgba(168,85,247,.2)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,9);ctx.lineTo(canvas.width,9);ctx.stroke();
+  });
+  // Auto-demo: fire first scenario after 1.2s
+  setTimeout(()=>fireScenario(0), 1200);
+}
+
+
+renderStepNav();
+switchMode('capture');
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown') nextStep();
+  if(e.key==='ArrowLeft'||e.key==='PageUp') prevStep();
+});
+</script>
+</body>
+</html>
