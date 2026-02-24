@@ -1439,25 +1439,43 @@ function initMotion(){
   // ── 스켈레톤 관절 좌표 생성 (영상 크기 기준 비율) ──
   // 사람이 용접할 때의 자연스러운 동작 시뮬레이션
   function getJoints(t, W, H){
-    const phase = (t % 360) / 360;
-    // 어깨 (고정)
-    const shoulder = { x: W*0.38 + Math.sin(t*0.008)*W*0.01, y: H*0.25 + Math.cos(t*0.006)*H*0.008 };
-    // 팔꿈치 (중간 움직임)
-    const elbow = {
-      x: shoulder.x + W*0.14 + Math.sin(t*0.025 + 0.5)*W*0.04,
-      y: shoulder.y + H*0.18 + Math.cos(t*0.02)*H*0.03
-    };
-    // 손목 (더 많이 움직임)
-    const wrist = {
-      x: elbow.x + W*0.13 + Math.sin(t*0.04 + 1.2)*W*0.06,
-      y: elbow.y + H*0.16 + Math.cos(t*0.035 + 0.8)*H*0.05
-    };
-    // 토치 끝 (가장 많이 움직임 - 이게 용접선이 됨)
-    const torch = {
-      x: wrist.x + W*0.07 + Math.sin(t*0.055 + 2.0)*W*0.08,
-      y: wrist.y + H*0.10 + Math.cos(t*0.05 + 1.5)*H*0.06
-    };
-    return { shoulder, elbow, wrist, torch };
+    if(selectedSample === 2) {
+      // ── SAMPLE 2: TIG 배관 용접 — 원형/타원 궤적 ──
+      const shoulder = { x: W*0.42 + Math.sin(t*0.006)*W*0.008, y: H*0.22 + Math.cos(t*0.005)*H*0.006 };
+      const cAngle = t * 0.03;
+      const elbow = {
+        x: shoulder.x + W*0.12 + Math.cos(cAngle)*W*0.07,
+        y: shoulder.y + H*0.20 + Math.sin(cAngle)*H*0.05
+      };
+      const wAngle = t * 0.035 + 0.8;
+      const wrist = {
+        x: elbow.x + W*0.10 + Math.cos(wAngle)*W*0.09,
+        y: elbow.y + H*0.14 + Math.sin(wAngle)*H*0.07
+      };
+      const tAngle = t * 0.04 + 1.5;
+      const torch = {
+        x: W*0.52 + Math.cos(tAngle) * W*0.14,
+        y: H*0.60 + Math.sin(tAngle) * H*0.10
+      };
+      return { shoulder, elbow, wrist, torch };
+    } else {
+      // ── SAMPLE 1: MIG 강판 용접 — 직선 전진 + 위빙 ──
+      const shoulder = { x: W*0.28 + Math.sin(t*0.008)*W*0.01, y: H*0.28 + Math.cos(t*0.006)*H*0.008 };
+      const progress = (t % 300) / 300;
+      const elbow = {
+        x: shoulder.x + W*0.16 + progress*W*0.10 + Math.sin(t*0.06)*W*0.01,
+        y: shoulder.y + H*0.18 + Math.cos(t*0.05)*H*0.015
+      };
+      const wrist = {
+        x: elbow.x + W*0.14 + progress*W*0.08 + Math.sin(t*0.08)*W*0.02,
+        y: elbow.y + H*0.15 + Math.sin(t*0.12)*H*0.03
+      };
+      const torch = {
+        x: W*0.22 + progress*W*0.55 + Math.sin(t*0.1)*W*0.015,
+        y: H*0.62 + Math.sin(t*0.15)*H*0.05
+      };
+      return { shoulder, elbow, wrist, torch };
+    }
   }
 
   let scanY = 0;
@@ -1536,7 +1554,8 @@ function initMotion(){
     }
 
     // ── 토치 각도 표시 선 ──
-    const ang = (-45 + Math.sin(t*0.04)*15) * Math.PI/180;
+    // 샘플에 따라 각도 다름: MIG=전진각(-45°위빙), TIG=수직원형(0°회전)
+    const ang = selectedSample===2 ? (t*0.04) : (-45 + Math.sin(t*0.04)*15) * Math.PI/180;
     ctx.beginPath();
     ctx.moveTo(joints.torch.x, joints.torch.y);
     ctx.lineTo(joints.torch.x + Math.cos(ang)*32, joints.torch.y + Math.sin(ang)*32);
@@ -1672,8 +1691,17 @@ function initSuccess(){
       y: margin.y + p.y * margin.h
     }));
   } else {
-    // 기본 궤적 (영상 없을 때)
-    for(let i=0;i<=80;i++) sp.push({x:W*.18+(i/80)*(W*.64), y:H*.55+Math.sin(i*.18)*40+Math.sin(i*.35)*18});
+    // 기본 궤적 — 샘플에 따라 다름
+    if(selectedSample === 2) {
+      // TIG 배관: 타원형 궤적
+      for(let i=0;i<=80;i++){
+        const a = (i/80)*Math.PI*2;
+        sp.push({x: W*.5 + Math.cos(a)*W*.28, y: H*.52 + Math.sin(a)*H*.18});
+      }
+    } else {
+      // MIG 강판: 직선 위빙
+      for(let i=0;i<=80;i++) sp.push({x:W*.12+(i/80)*(W*.76), y:H*.55+Math.sin(i*.22)*35});
+    }
   }
 
   // 사람 원본 궤적 (회색 점선 — "사람이 이렇게 했다")
