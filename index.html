@@ -2716,45 +2716,73 @@ document.addEventListener('keydown',e=>{
 });
 </script>
 
-<!-- ── PDF RESOURCES SECTION ── -->
+<!-- ── PDF 자료실 플로팅 버튼 ── -->
 <style>
-.pdf-section{background:#04080f;border-top:2px solid #1a2a40;padding:28px 40px;flex-shrink:0;}
-.pdf-section-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2.5px;color:#f5a623;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.pdf-section-title::before{content:'';display:inline-block;width:3px;height:14px;background:#f5a623;border-radius:2px;}
-.pdf-grid{display:flex;flex-wrap:wrap;gap:10px;}
-.pdf-item{display:flex;align-items:center;gap:10px;background:#080e1a;border:1px solid #1a2a40;border-radius:4px;padding:10px 16px;text-decoration:none;transition:border-color .2s,background .2s;min-width:260px;}
-.pdf-item:hover{border-color:#f5a623;background:#0d1627;}
-.pdf-icon{font-size:18px;flex-shrink:0;}
-.pdf-info{display:flex;flex-direction:column;gap:2px;}
-.pdf-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#c8d8e8;letter-spacing:.5px;}
-.pdf-meta{font-family:'Share Tech Mono',monospace;font-size:9px;color:#4a6080;}
-.pdf-badge{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:8px;background:rgba(245,166,35,.12);color:#f5a623;border:1px solid rgba(245,166,35,.25);padding:2px 7px;border-radius:2px;flex-shrink:0;}
+.pdf-fab{position:fixed;bottom:24px;right:24px;z-index:9999;}
+.pdf-fab-btn{
+  display:flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,#f5a623,#ff6b35);
+  color:#000;border:none;border-radius:4px;
+  padding:10px 18px;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;letter-spacing:1.5px;
+  box-shadow:0 4px 20px rgba(245,166,35,.4);
+  transition:transform .15s,box-shadow .15s;
+}
+.pdf-fab-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,166,35,.5);}
+.pdf-fab-btn.open{background:linear-gradient(135deg,#1a2a40,#0d1627);color:#f5a623;border:1px solid #f5a623;}
+.pdf-panel{
+  display:none;position:absolute;bottom:52px;right:0;
+  background:#080e1a;border:1px solid #1a2a40;border-radius:6px;
+  padding:16px;min-width:300px;
+  box-shadow:0 8px 32px rgba(0,0,0,.6);
+}
+.pdf-panel.show{display:block;}
+.pdf-panel-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:#f5a623;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.pdf-panel-title::before{content:'';display:inline-block;width:3px;height:11px;background:#f5a623;border-radius:2px;}
+.pdf-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #1a2a40;border-radius:4px;text-decoration:none;background:#04080f;transition:border-color .2s,background .2s;margin-bottom:6px;}
+.pdf-link:last-child{margin-bottom:0;}
+.pdf-link:hover{border-color:#f5a623;background:#0d1627;}
+.pdf-link-icon{font-size:16px;flex-shrink:0;}
+.pdf-link-info{flex:1;}
+.pdf-link-name{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:#c8d8e8;display:block;}
+.pdf-link-meta{font-family:'Share Tech Mono',monospace;font-size:8px;color:#4a6080;}
+.pdf-link-badge{font-family:'Share Tech Mono',monospace;font-size:8px;background:rgba(245,166,35,.12);color:#f5a623;border:1px solid rgba(245,166,35,.25);padding:2px 6px;border-radius:2px;flex-shrink:0;}
 </style>
 
-<div class="pdf-section">
-  <div class="pdf-section-title">자료실 — DOCUMENTS</div>
-  <div class="pdf-grid" id="pdf-grid">
-    <a class="pdf-item" href="고구려_투자자_피치덱.pdf" target="_blank">
-      <span class="pdf-icon">📄</span>
-      <div class="pdf-info">
-        <span class="pdf-name">고구려 투자자 피치덱</span>
-        <span class="pdf-meta">인류 기능 지능 중앙센터 · 2026.02</span>
+<div class="pdf-fab">
+  <div class="pdf-panel" id="pdfPanel">
+    <div class="pdf-panel-title">자료실 — DOCUMENTS</div>
+    <!-- ▼ 파일 추가 시 이 블록을 복사해서 붙여넣기 -->
+    <a class="pdf-link" href="고구려_투자자_피치덱.pdf" target="_blank">
+      <span class="pdf-link-icon">📄</span>
+      <div class="pdf-link-info">
+        <span class="pdf-link-name">고구려 투자자 피치덱</span>
+        <span class="pdf-link-meta">인류 기능 지능 중앙센터 · 2026.02</span>
       </div>
-      <span class="pdf-badge">PDF</span>
+      <span class="pdf-link-badge">PDF</span>
     </a>
-    <!-- 파일 추가 시 아래 <a> 블록을 복사해서 붙여넣기 하세요 -->
-    <!--
-    <a class="pdf-item" href="파일명.pdf" target="_blank">
-      <span class="pdf-icon">📄</span>
-      <div class="pdf-info">
-        <span class="pdf-name">표시할 이름</span>
-        <span class="pdf-meta">설명 · 날짜</span>
-      </div>
-      <span class="pdf-badge">PDF</span>
-    </a>
-    -->
+    <!-- ▲ 여기까지 복사 -->
   </div>
+  <button class="pdf-fab-btn" id="pdfFab" onclick="togglePdf()">📂 자료실</button>
 </div>
+<script>
+function togglePdf(){
+  const p=document.getElementById('pdfPanel');
+  const b=document.getElementById('pdfFab');
+  const open=p.classList.toggle('show');
+  b.classList.toggle('open',open);
+  b.textContent=open?'✕ 닫기':'📂 자료실';
+}
+document.addEventListener('click',function(e){
+  const fab=document.querySelector('.pdf-fab');
+  if(!fab.contains(e.target)){
+    document.getElementById('pdfPanel').classList.remove('show');
+    const b=document.getElementById('pdfFab');
+    b.classList.remove('open');
+    b.textContent='📂 자료실';
+  }
+});
+</script>
 
 </body>
 </html>
