@@ -2184,20 +2184,30 @@ const speechLang = {
   th:'th-TH', zh:'zh-CN', en:'en-US',
 };
 
-// TTS: 텍스트를 실제 음성으로 읽기
+// TTS: Google 번역 TTS (Web Speech API 대체 — 더 자연스러운 음성)
+const gttsLang = {
+  vn:'vi', id:'id', ph:'fil',
+  th:'th', zh:'zh-CN', en:'en', ko:'ko',
+};
+let _ttsAudio = null;
+
 function speakText(text, lang, rate=1.0, pitch=1.0) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel(); // 이전 음성 중단
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = speechLang[lang] || 'en-US';
-  utter.rate = rate;
-  utter.pitch = pitch;
-  utter.volume = 0.9;
-  // 해당 언어 목소리 우선 선택
-  const voices = window.speechSynthesis.getVoices();
-  const match = voices.find(v => v.lang.startsWith(utter.lang.split('-')[0]));
-  if (match) utter.voice = match;
-  window.speechSynthesis.speak(utter);
+  if(_ttsAudio) { _ttsAudio.pause(); _ttsAudio = null; }
+  const tl = gttsLang[lang] || 'en';
+  const encoded = encodeURIComponent(text);
+  const url = 'https://translate.googleapis.com/translate_tts?ie=UTF-8&q=' + encoded + '&tl=' + tl + '&client=gtx&ttsspeed=0.9';
+  const audio = new Audio(url);
+  audio.volume = 0.92;
+  audio.playbackRate = Math.min(Math.max(rate, 0.5), 2.0);
+  audio.play().catch(()=>{
+    if(!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = (speechLang && speechLang[lang]) || 'en-US';
+    utter.rate = rate; utter.pitch = pitch; utter.volume = 0.9;
+    window.speechSynthesis.speak(utter);
+  });
+  _ttsAudio = audio;
 }
 
 function selectLang(lang) {
@@ -2360,11 +2370,7 @@ function replaySpeech(lang) {
   startWaveAnim(lang);
 }
 
-// 음성 목록이 비동기 로드되므로 미리 트리거
-if(window.speechSynthesis) {
-  window.speechSynthesis.getVoices();
-  window.speechSynthesis.onvoiceschanged = ()=>{ window.speechSynthesis.getVoices(); };
-}
+// Google Translate TTS 사용 중 — Web Speech 초기화 불필요
 
 function initMultilingual() {
   // Reset wave canvases
