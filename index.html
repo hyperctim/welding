@@ -2715,5 +2715,46 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft'||e.key==='PageUp') prevStep();
 });
 </script>
+
+<!-- ── PDF RESOURCES SECTION ── -->
+<style>
+.pdf-section{background:#04080f;border-top:2px solid #1a2a40;padding:28px 40px;flex-shrink:0;}
+.pdf-section-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2.5px;color:#f5a623;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.pdf-section-title::before{content:'';display:inline-block;width:3px;height:14px;background:#f5a623;border-radius:2px;}
+.pdf-grid{display:flex;flex-wrap:wrap;gap:10px;}
+.pdf-item{display:flex;align-items:center;gap:10px;background:#080e1a;border:1px solid #1a2a40;border-radius:4px;padding:10px 16px;text-decoration:none;transition:border-color .2s,background .2s;min-width:260px;}
+.pdf-item:hover{border-color:#f5a623;background:#0d1627;}
+.pdf-icon{font-size:18px;flex-shrink:0;}
+.pdf-info{display:flex;flex-direction:column;gap:2px;}
+.pdf-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#c8d8e8;letter-spacing:.5px;}
+.pdf-meta{font-family:'Share Tech Mono',monospace;font-size:9px;color:#4a6080;}
+.pdf-badge{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:8px;background:rgba(245,166,35,.12);color:#f5a623;border:1px solid rgba(245,166,35,.25);padding:2px 7px;border-radius:2px;flex-shrink:0;}
+</style>
+
+<div class="pdf-section">
+  <div class="pdf-section-title">자료실 — DOCUMENTS</div>
+  <div class="pdf-grid" id="pdf-grid">
+    <a class="pdf-item" href="고구려_투자자_피치덱.pdf" target="_blank">
+      <span class="pdf-icon">📄</span>
+      <div class="pdf-info">
+        <span class="pdf-name">고구려 투자자 피치덱</span>
+        <span class="pdf-meta">인류 기능 지능 중앙센터 · 2026.02</span>
+      </div>
+      <span class="pdf-badge">PDF</span>
+    </a>
+    <!-- 파일 추가 시 아래 <a> 블록을 복사해서 붙여넣기 하세요 -->
+    <!--
+    <a class="pdf-item" href="파일명.pdf" target="_blank">
+      <span class="pdf-icon">📄</span>
+      <div class="pdf-info">
+        <span class="pdf-name">표시할 이름</span>
+        <span class="pdf-meta">설명 · 날짜</span>
+      </div>
+      <span class="pdf-badge">PDF</span>
+    </a>
+    -->
+  </div>
+</div>
+
 </body>
 </html>
